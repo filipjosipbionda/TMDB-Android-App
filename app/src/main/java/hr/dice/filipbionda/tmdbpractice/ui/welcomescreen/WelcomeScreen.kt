@@ -38,95 +38,107 @@ import hr.dice.filipbionda.tmdbpractice.ui.theme.overlayGradientSecondColor
 import hr.dice.filipbionda.tmdbpractice.ui.theme.welcomeScreenPrimaryTextColor
 
 @Composable
-fun WelcomeScreen(modifier: Modifier = Modifier){
+fun WelcomeScreen(modifier: Modifier = Modifier)  {
     Box(
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     ) {
-        val brush = Brush.verticalGradient(
-            colorStops = arrayOf(
-                0.0f to overlayGradientFirstColor,
-                0.8f to overlayGradientSecondColor
-            ),
-        )
+        val brush =
+            Brush.verticalGradient(
+                colorStops =
+                    arrayOf(
+                        0.0f to overlayGradientFirstColor,
+                        0.8f to overlayGradientSecondColor,
+                    ),
+            )
         Image(
             painter = painterResource(R.drawable.welcomescreen_background_blurred),
             contentDescription = null,
-            modifier = Modifier
-                .fillMaxSize(),
-            contentScale = ContentScale.FillBounds
+            modifier =
+                Modifier
+                    .fillMaxSize(),
+            contentScale = ContentScale.FillBounds,
         )
         Canvas(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                drawRect(
-                    brush = brush,
-                )
-            }
-        Column(
-            modifier = Modifier.align(alignment = Alignment.BottomCenter)
-                .padding(horizontal = 28.dp, vertical = 42.dp)
+            modifier = Modifier.fillMaxSize(),
         ) {
-            val annotatedString = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(color = welcomeScreenPrimaryTextColor)
-                ){
-                    append(stringResource(R.string.welcome_screen_text_part1))
-                }
-                withStyle(
-                    style = SpanStyle(color = welcomeScreenPrimaryTextColor, fontWeight = FontWeight.Bold
-                    )
-                ){
-                    append(stringResource(R.string.welcome_screen_text_part2))
-                }
-            }
-            val buttonHorizontalGradientBrush = Brush.horizontalGradient(
-                colors = listOf(buttonFirstColor, buttonSecondColor)
+            drawRect(
+                brush = brush,
             )
-           Image(
-               painter = painterResource(R.drawable.img),
-               contentDescription = null,
-               contentScale = ContentScale.FillBounds,
-               modifier = Modifier
-                   .width(176.dp)
-                   .height(18.dp)
-           )
+        }
+        Column(
+            modifier =
+                Modifier.align(alignment = Alignment.BottomCenter)
+                    .padding(horizontal = 28.dp, vertical = 42.dp),
+        ) {
+            val annotatedString =
+                buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(color = welcomeScreenPrimaryTextColor),
+                    ) {
+                        append(stringResource(R.string.welcome_screen_text_part1))
+                    }
+                    withStyle(
+                        style =
+                            SpanStyle(
+                                color = welcomeScreenPrimaryTextColor,
+                                fontWeight = FontWeight.Bold,
+                            ),
+                    ) {
+                        append(stringResource(R.string.welcome_screen_text_part2))
+                    }
+                }
+            val buttonHorizontalGradientBrush =
+                Brush.horizontalGradient(
+                    colors = listOf(buttonFirstColor, buttonSecondColor),
+                )
+            Image(
+                painter = painterResource(R.drawable.img),
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                modifier =
+                    Modifier
+                        .width(176.dp)
+                        .height(18.dp),
+            )
             Spacer(
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.height(20.dp),
             )
             Text(
                 text = annotatedString,
                 color = welcomeScreenPrimaryTextColor,
                 fontSize = 30.sp,
-                lineHeight = 36.sp
+                lineHeight = 36.sp,
             )
             Spacer(
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.height(20.dp),
             )
             Text(
                 text = stringResource(R.string.welcome_screen_description),
                 color = welcomeScreenPrimaryTextColor,
-                fontSize = 16.sp
+                fontSize = 16.sp,
             )
             Spacer(
-                modifier = Modifier.height(20.dp)
+                modifier = Modifier.height(20.dp),
             )
             Button(
                 onClick = {},
-                modifier = Modifier.fillMaxWidth()
-                    .height(48.dp)
-                    .background(
-                        brush = buttonHorizontalGradientBrush,
-                        shape = RoundedCornerShape(size = 20.dp)
+                modifier =
+                    Modifier.fillMaxWidth()
+                        .height(48.dp)
+                        .background(
+                            brush = buttonHorizontalGradientBrush,
+                            shape = RoundedCornerShape(size = 20.dp),
                         ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent
-                )
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = Color.Transparent,
+                    ),
             ) {
                 Text(
                     text = stringResource(R.string.welcome_screen_button_text),
                     fontSize = 20.sp,
                     color = welcomeScreenPrimaryTextColor,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
                 )
             }
         }
@@ -135,7 +147,6 @@ fun WelcomeScreen(modifier: Modifier = Modifier){
 
 @Preview
 @Composable
-fun WelcomeScreenPreview(){
+fun WelcomeScreenPreview()  {
     WelcomeScreen()
 }
-

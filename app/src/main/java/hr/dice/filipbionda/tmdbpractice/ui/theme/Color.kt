@@ -14,4 +14,4 @@ val welcomeScreenPrimaryTextColor = Color.White
 val overlayGradientFirstColor = Color.Transparent
 val overlayGradientSecondColor = Color(0xB20C0404)
 val buttonFirstColor = Color(0xFF8000FF)
-val buttonSecondColor =Color(0xFF540BA1)
+val buttonSecondColor = Color(0xFF540BA1)
