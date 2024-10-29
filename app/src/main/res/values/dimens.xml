@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="welcome_screen_content_horizontal_padding">28dp</dimen>
+    <dimen name="welcome_screen_content_vertical_padding">42dp</dimen>
+    <dimen name="welcome_screen_content_image_width">176dp</dimen>
+    <dimen name="welcome_screen_content_image_height">18dp</dimen>
+    <dimen name="welcome_screen_content_spacer_height">20dp</dimen>
+    <dimen name="welcome_screen_content_button_height">48dp</dimen>
+    <dimen name="welcome_screen_content_button_background_shape_size">20dp</dimen>
+
+</resources>

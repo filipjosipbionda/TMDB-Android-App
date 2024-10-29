@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.ktlint)
     alias(libs.plugins.compose.compiler)
 }
 
@@ -48,6 +47,8 @@ android {
         }
     }
 }
+
+apply(from = "$rootDir/staticAnalysis/staticAnalysis.gradle.kts")
 
 dependencies {
 
