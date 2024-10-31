@@ -31,5 +31,3 @@ ktlint = { module = "com.pinterest:ktlint", version.ref = "ktlintVersion" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-
-
