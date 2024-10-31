@@ -38,7 +38,7 @@ import hr.dice.filipbionda.tmdbpractice.ui.theme.overlayGradientSecondColor
 import hr.dice.filipbionda.tmdbpractice.ui.theme.welcomeScreenPrimaryTextColor
 
 @Composable
-fun WelcomeScreen(modifier: Modifier = Modifier)  {
+fun WelcomeScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
@@ -147,6 +147,6 @@ fun WelcomeScreen(modifier: Modifier = Modifier)  {
 
 @Preview
 @Composable
-fun WelcomeScreenPreview()  {
+fun WelcomeScreenPreview() {
     WelcomeScreen()
 }
