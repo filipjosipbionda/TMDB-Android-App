@@ -10,7 +10,7 @@ private val LightColorScheme =
         secondary = PurpleGrey40,
         tertiary = darkPurple,
         onBackground = transparent,
-        background = black_70,
+        scrim = black_70,
     )
 
 @Composable

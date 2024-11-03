@@ -25,7 +25,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
@@ -39,7 +38,7 @@ fun WelcomeScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier.fillMaxSize(),
     ) {
-        BackgroundImage()
+        BackgroundImage(modifier = Modifier.fillMaxSize())
         WelcomeScreenContent(modifier = Modifier.align(alignment = Alignment.BottomCenter))
     }
 }
@@ -51,12 +50,12 @@ private fun BackgroundImage(modifier: Modifier = Modifier) {
             colorStops =
             arrayOf(
                 0.0f to MaterialTheme.colorScheme.onBackground,
-                0.8f to MaterialTheme.colorScheme.background,
+                0.8f to MaterialTheme.colorScheme.scrim,
             ),
         )
     Box(
-        modifier = modifier.fillMaxSize()
-    ){
+        modifier = modifier,
+    ) {
         Image(
             painter = painterResource(R.drawable.welcomescreen_background_blurred),
             contentDescription = null,
@@ -85,26 +84,24 @@ private fun WelcomeScreenContent(modifier: Modifier = Modifier) {
         val annotatedString =
             buildAnnotatedString {
                 withStyle(
-                    style = SpanStyle(
-                        color = MaterialTheme.typography.bodyLarge.color,
-                        fontSize = 30.sp,
-                    ),
+                    style = MaterialTheme.typography.bodyLarge.toSpanStyle(),
                 ) {
                     append(stringResource(R.string.welcome_screen_text_part1))
                 }
                 withStyle(
-                    SpanStyle(
-                        color = MaterialTheme.typography.bodyLarge.color,
+                    style = MaterialTheme.typography.bodyLarge.copy(
                         fontWeight = FontWeight.Bold,
-                        fontSize = 30.sp,
-                    ),
+                    ).toSpanStyle(),
                 ) {
                     append(stringResource(R.string.welcome_screen_text_part2))
                 }
             }
         val buttonHorizontalGradientBrush =
             Brush.horizontalGradient(
-                colors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.tertiary),
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.tertiary,
+                ),
             )
         Image(
             painter = painterResource(R.drawable.img),
@@ -135,7 +132,8 @@ private fun WelcomeScreenContent(modifier: Modifier = Modifier) {
         Button(
             onClick = {},
             modifier =
-            Modifier.fillMaxWidth()
+            Modifier
+                .fillMaxWidth()
                 .height(dimensionResource(R.dimen.welcome_screen_content_button_height))
                 .background(
                     brush = buttonHorizontalGradientBrush,
