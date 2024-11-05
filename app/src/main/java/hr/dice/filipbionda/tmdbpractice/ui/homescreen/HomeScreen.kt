@@ -52,7 +52,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -66,12 +65,12 @@ import coil.compose.AsyncImage
 import hr.dice.filipbionda.tmdbpractice.R
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
-import hr.dice.filipbionda.tmdbpractice.ui.theme.homeScreenBackgroundFirstColor
-import hr.dice.filipbionda.tmdbpractice.ui.theme.homeScreenBackgroundSecondColor
-import hr.dice.filipbionda.tmdbpractice.ui.theme.homeScreenHeadlineTextColor
-import hr.dice.filipbionda.tmdbpractice.ui.theme.searchBarContainerColor
-import hr.dice.filipbionda.tmdbpractice.ui.theme.searchBarContentColor
+import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
+import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50
+import hr.dice.filipbionda.tmdbpractice.ui.theme.lightPurple
+import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_36
 import hr.dice.filipbionda.tmdbpractice.ui.theme.secondaryColor
+import hr.dice.filipbionda.tmdbpractice.ui.theme.white
 import kotlinx.coroutines.launch
 
 private const val mockMovieUrl = "https://i.namu.wiki/i/__CjJoFpuzJXzMjM2DjQYvXCNf6UbCA_uaqgE5gubv80nATEJXEMwf01jV7kQnfkpREUrl2MEmR18H8_rUFAOg.webp"
@@ -131,7 +130,7 @@ private val mockSpecials =
     )
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier)  {
+fun HomeScreen(modifier: Modifier = Modifier) {
     var currentCategory by rememberSaveable {
         mutableStateOf(ContentType.MOVIE)
     }
@@ -148,19 +147,19 @@ fun HomeScreen(modifier: Modifier = Modifier)  {
     val brush =
         Brush.verticalGradient(
             colorStops =
-                arrayOf(
-                    0.0f to homeScreenBackgroundFirstColor,
-                    0.6f to homeScreenBackgroundSecondColor,
-                ),
+            arrayOf(
+                0.0f to lightPurple,
+                0.6f to black_100,
+            ),
         )
 
     Box(
         modifier =
-            modifier
-                .fillMaxSize()
-                .background(
-                    brush = brush,
-                ),
+        modifier
+            .fillMaxSize()
+            .background(
+                brush = brush,
+            ),
     ) {
         HomeScreenHeadline(
             modifier = Modifier.offset(y = dimensionResource(R.dimen.home_screen_headline_y_offset)),
@@ -175,25 +174,25 @@ fun HomeScreen(modifier: Modifier = Modifier)  {
             },
             categories = ContentType.entries.toList(),
             modifier =
-                Modifier
-                    .offset(y = dimensionResource(R.dimen.home_screen_chip_group_y_offset))
-                    .zIndex(2f)
-                    .fillMaxWidth(),
+            Modifier
+                .offset(y = dimensionResource(R.dimen.home_screen_chip_group_y_offset))
+                .zIndex(2f)
+                .fillMaxWidth(),
         )
         HomeScreenContent(
             items = currentItems,
             popularItems = currentItems,
             modifier =
-                Modifier
-                    .offset(y = dimensionResource(R.dimen.home_screen_content_y_offset))
-                    .zIndex(1f)
-                    .fillMaxSize(),
+            Modifier
+                .offset(y = dimensionResource(R.dimen.home_screen_content_y_offset))
+                .zIndex(1f)
+                .fillMaxSize(),
         )
     }
 }
 
 @Composable
-private fun HomeScreenHeadline(modifier: Modifier = Modifier)  {
+private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier,
     ) {
@@ -201,15 +200,15 @@ private fun HomeScreenHeadline(modifier: Modifier = Modifier)  {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top,
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
-                    ),
+            Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
+                ),
         ) {
             Text(
                 text = "What do you want to\nwatch today?",
-                color = homeScreenHeadlineTextColor,
+                color = white,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Bold,
@@ -217,19 +216,19 @@ private fun HomeScreenHeadline(modifier: Modifier = Modifier)  {
             )
             Box(
                 modifier =
-                    Modifier
-                        .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
-                        .size(dimensionResource(R.dimen.home_screen_headline_image_size))
-                        .background(Color.Transparent)
-                        .clip(shape = CircleShape)
-                        .border(
-                            border =
-                                BorderStroke(
-                                    width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
-                                    color = Color.White,
-                                ),
-                            shape = CircleShape,
+                Modifier
+                    .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
+                    .size(dimensionResource(R.dimen.home_screen_headline_image_size))
+                    .background(Color.Transparent)
+                    .clip(shape = CircleShape)
+                    .border(
+                        border =
+                        BorderStroke(
+                            width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
+                            color = Color.White,
                         ),
+                        shape = CircleShape,
+                    ),
             ) {
                 Image(
                     painter = painterResource(R.drawable.profile_picture),
@@ -244,7 +243,7 @@ private fun HomeScreenHeadline(modifier: Modifier = Modifier)  {
 @SuppressLint("UseOfNonLambdaOffsetOverload")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreenSearchBar(modifier: Modifier = Modifier)  {
+private fun HomeScreenSearchBar(modifier: Modifier = Modifier) {
     var query by rememberSaveable { mutableStateOf("") }
     var expanded by rememberSaveable { mutableStateOf(false) }
     val suggestions =
@@ -254,35 +253,24 @@ private fun HomeScreenSearchBar(modifier: Modifier = Modifier)  {
                 "Batman",
             )
         }
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
 
-    val animatedWidth by animateDpAsState(
-        targetValue = if (expanded) screenWidth else dimensionResource(R.dimen.home_screen_search_bar_width),
+    val animatedDp by animateDpAsState(
+        targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_horizontal_padding),
         animationSpec =
-            tween(
-                durationMillis = 400,
-                easing = FastOutLinearInEasing,
-            ),
-        label = "",
-    )
-
-    val animatedXaxisOffset by animateDpAsState(
-        targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_bar_x_offset),
-        animationSpec =
-            tween(
-                durationMillis = 400,
-                easing = FastOutLinearInEasing,
-            ),
+        tween(
+            durationMillis = 400,
+            easing = FastOutLinearInEasing,
+        ),
         label = "",
     )
 
     val animatedYaxisOffset by animateDpAsState(
         targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_bar_y_offset),
         animationSpec =
-            tween(
-                durationMillis = 400,
-                easing = FastOutLinearInEasing,
-            ),
+        tween(
+            durationMillis = 400,
+            easing = FastOutLinearInEasing,
+        ),
         label = "",
     )
 
@@ -291,27 +279,28 @@ private fun HomeScreenSearchBar(modifier: Modifier = Modifier)  {
     ) {
         SearchBar(
             colors =
-                SearchBarDefaults.colors(
-                    containerColor = searchBarContainerColor,
-                ),
+            SearchBarDefaults.colors(
+                containerColor = purple_36,
+            ),
             modifier =
-                Modifier
-                    .width(animatedWidth)
-                    .offset(y = animatedYaxisOffset, x = animatedXaxisOffset),
+            Modifier
+                .fillMaxWidth()
+                .height(dimensionResource(R.dimen.home_screen_search_bar_height))
+                .offset(y = animatedYaxisOffset)
+                .padding(horizontal = animatedDp),
             inputField = {
                 SearchBarDefaults.InputField(
                     colors =
-                        TextFieldDefaults.colors(
-                            focusedTextColor = homeScreenHeadlineTextColor,
-                        ),
+                    TextFieldDefaults.colors(
+                        focusedTextColor = white,
+                    ),
                     query = query,
                     onSearch = { suggestion ->
                         expanded = false
                         query = ""
-                        if (suggestion.isNotEmpty())
-                            {
-                                suggestions.add(suggestion)
-                            }
+                        if (suggestion.isNotEmpty()) {
+                            suggestions.add(suggestion)
+                        }
                     },
                     onQueryChange = {
                         query = it
@@ -324,36 +313,33 @@ private fun HomeScreenSearchBar(modifier: Modifier = Modifier)  {
                         Text(
                             text = "Search...",
                             style =
-                                MaterialTheme.typography.bodySmall.copy(
-                                    fontSize = 16.sp,
-                                    color = searchBarContentColor,
-                                ),
+                            MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 16.sp,
+                                color = grey_50,
+                            ),
                         )
                     },
                     trailingIcon = {
-                        if (expanded)
-                            {
-                                IconButton(
-                                    onClick = {
-                                        if (query.isEmpty())
-                                            {
-                                                expanded = false
-                                            } else
-                                            {
-                                                query = ""
-                                            }
-                                    },
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Clear,
-                                        contentDescription = null,
-                                    )
-                                }
-                            } else {
+                        if (expanded) {
+                            IconButton(
+                                onClick = {
+                                    if (query.isEmpty()) {
+                                        expanded = false
+                                    } else {
+                                        query = ""
+                                    }
+                                },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Clear,
+                                    contentDescription = null,
+                                )
+                            }
+                        } else {
                             Icon(
                                 imageVector = Icons.Default.Search,
                                 contentDescription = null,
-                                tint = searchBarContentColor,
+                                tint = grey_50,
                             )
                         }
                     },
@@ -396,42 +382,42 @@ fun HomeScreenChipGroup(
     onChipClick: (ContentType) -> Unit,
     modifier: Modifier = Modifier,
     initialCategory: ContentType = ContentType.MOVIE,
-)  {
+) {
     var selectedChip by rememberSaveable {
         mutableStateOf(initialCategory)
     }
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
         modifier =
-            modifier
-                .fillMaxWidth(),
+        modifier
+            .fillMaxWidth(),
     ) {
         items(categories) { category ->
             FilterChip(
                 modifier =
-                    Modifier
-                        .padding(
-                            start =
-                                if (category == initialCategory) {
-                                    dimensionResource(
-                                        R.dimen.home_screen_horizontal_padding,
-                                    )
-                                } else {
-                                    dimensionResource(R.dimen.filter_chip_group_content_padding)
-                                },
-                        )
-                        .height(30.dp)
-                        .width(90.dp),
+                Modifier
+                    .padding(
+                        start =
+                        if (category == initialCategory) {
+                            dimensionResource(
+                                R.dimen.home_screen_horizontal_padding,
+                            )
+                        } else {
+                            dimensionResource(R.dimen.filter_chip_group_content_padding)
+                        },
+                    )
+                    .height(30.dp)
+                    .width(90.dp),
                 selected = selectedChip == category,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.filter_chip_shape_size)),
                 border = null,
                 colors =
-                    FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = secondaryColor,
-                        selectedLabelColor = MaterialTheme.typography.labelSmall.color,
-                        disabledLabelColor = Color.White,
-                        disabledSelectedContainerColor = Color.Transparent,
-                    ),
+                FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = secondaryColor,
+                    selectedLabelColor = MaterialTheme.typography.labelSmall.color,
+                    disabledLabelColor = Color.White,
+                    disabledSelectedContainerColor = Color.Transparent,
+                ),
                 onClick = {
                     selectedChip = category
                     onChipClick(selectedChip)
@@ -439,7 +425,14 @@ fun HomeScreenChipGroup(
                 label = {
                     Text(
                         text = createChipLabel(category),
-                        style = if (category == selectedChip) MaterialTheme.typography.labelSmall else MaterialTheme.typography.bodySmall,
+                        style = if (category == selectedChip) {
+                            MaterialTheme.typography.labelSmall
+                        } else {
+                            MaterialTheme.typography.labelSmall.copy(
+                                color = grey_50,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        },
                         textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
                     )
@@ -454,7 +447,7 @@ fun HomeScreenContent(
     items: List<String>,
     popularItems: List<String>,
     modifier: Modifier = Modifier,
-)  {
+) {
     val mockImage =
         when (items.first()) {
             "movie1" -> mockMovieUrl
@@ -491,24 +484,24 @@ fun HomeScreenContent(
                     contentScale = ContentScale.FillBounds,
                     placeholder = painterResource(R.drawable.placeholder_image),
                     modifier =
-                        Modifier
-                            .animateItem(
-                                fadeInSpec = tween(durationMillis = 300),
-                                fadeOutSpec = tween(300),
-                            )
-                            .padding(
-                                start =
-                                    if (it == items.first()) {
-                                        dimensionResource(
-                                            R.dimen.home_screen_horizontal_padding,
-                                        )
-                                    } else {
-                                        dimensionResource(R.dimen.home_screen_content_image_padding_start)
-                                    },
-                            )
-                            .height(dimensionResource(R.dimen.content_image_height))
-                            .width(dimensionResource(R.dimen.content_image_width))
-                            .clip(shape = RoundedCornerShape(size = dimensionResource(R.dimen.content_image_shape_size))),
+                    Modifier
+                        .animateItem(
+                            fadeInSpec = tween(durationMillis = 300),
+                            fadeOutSpec = tween(300),
+                        )
+                        .padding(
+                            start =
+                            if (it == items.first()) {
+                                dimensionResource(
+                                    R.dimen.home_screen_horizontal_padding,
+                                )
+                            } else {
+                                dimensionResource(R.dimen.home_screen_content_image_padding_start)
+                            },
+                        )
+                        .height(dimensionResource(R.dimen.content_image_height))
+                        .width(dimensionResource(R.dimen.content_image_width))
+                        .clip(shape = RoundedCornerShape(size = dimensionResource(R.dimen.content_image_shape_size))),
                 )
             }
         }
@@ -533,21 +526,21 @@ fun HomeScreenContent(
                     contentScale = ContentScale.FillBounds,
                     placeholder = painterResource(R.drawable.placeholder_image),
                     modifier =
-                        Modifier
-                            .animateItem()
-                            .padding(
-                                start =
-                                    if (it == items.first()) {
-                                        dimensionResource(
-                                            R.dimen.home_screen_horizontal_padding,
-                                        )
-                                    } else {
-                                        dimensionResource(R.dimen.home_screen_content_image_padding_start)
-                                    },
-                            )
-                            .height(dimensionResource(R.dimen.content_image_height))
-                            .width(dimensionResource(R.dimen.content_image_width))
-                            .clip(shape = RoundedCornerShape(size = dimensionResource(R.dimen.content_image_shape_size))),
+                    Modifier
+                        .animateItem()
+                        .padding(
+                            start =
+                            if (it == items.first()) {
+                                dimensionResource(
+                                    R.dimen.home_screen_horizontal_padding,
+                                )
+                            } else {
+                                dimensionResource(R.dimen.home_screen_content_image_padding_start)
+                            },
+                        )
+                        .height(dimensionResource(R.dimen.content_image_height))
+                        .width(dimensionResource(R.dimen.content_image_width))
+                        .clip(shape = RoundedCornerShape(size = dimensionResource(R.dimen.content_image_shape_size))),
                 )
             }
         }
@@ -555,7 +548,7 @@ fun HomeScreenContent(
 }
 
 @Composable
-fun createChipLabel(contentType: ContentType): String  {
+fun createChipLabel(contentType: ContentType): String {
     return when (contentType) {
         ContentType.MOVIE -> stringResource(R.string.movies)
         ContentType.SERIES -> stringResource(R.string.series)
@@ -567,7 +560,7 @@ fun createChipLabel(contentType: ContentType): String  {
 
 @Preview
 @Composable
-fun HomeScreenPreview()  {
+fun HomeScreenPreview() {
     TMDBPracticeTheme {
         HomeScreen()
     }

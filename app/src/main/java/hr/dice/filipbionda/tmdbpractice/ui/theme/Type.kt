@@ -38,22 +38,22 @@ val Typography =
             color = white,
         ),
         titleLarge =
-            TextStyle(
-                fontFamily = InterFontFamily,
-                fontWeight = FontWeight.Bold,
-                color = welcomeScreenPrimaryTextColor,
-                fontSize = 22.sp,
-                lineHeight = 28.sp,
-                letterSpacing = 0.sp,
-            ),
+        TextStyle(
+            fontFamily = InterFontFamily,
+            fontWeight = FontWeight.Bold,
+            color = welcomeScreenPrimaryTextColor,
+            fontSize = 22.sp,
+            lineHeight = 28.sp,
+            letterSpacing = 0.sp,
+        ),
         labelSmall =
-            TextStyle(
-                fontFamily = InterFontFamily,
-                fontWeight = FontWeight.Bold,
-                color = welcomeScreenPrimaryTextColor,
-                fontSize = 14.sp,
-                letterSpacing = 0.5.sp,
-            ),
+        TextStyle(
+            fontFamily = InterFontFamily,
+            fontWeight = FontWeight.Bold,
+            color = welcomeScreenPrimaryTextColor,
+            fontSize = 14.sp,
+            letterSpacing = 0.5.sp,
+        ),
         bodySmall =
         TextStyle(
             fontFamily = FontFamily.Default,
