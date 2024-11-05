@@ -2,10 +2,13 @@ package hr.dice.filipbionda.tmdbpractice.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
-val Pink40 = Color(0xFF7D5260)
 
+val white = Color.White
+val transparent = Color.Transparent
+val black_70 = Color(0xB20C0404)
+val lightPurple = Color(0xFF8000FF)
+val darkPurple = Color(0xFF540BA1)
 val welcomeScreenPrimaryTextColor = Color.White
 val overlayGradientFirstColor = Color.Transparent
 val overlayGradientSecondColor = Color(0xB20C0404)

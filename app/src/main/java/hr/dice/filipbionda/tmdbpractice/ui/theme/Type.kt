@@ -29,14 +29,14 @@ val InterFontFamily =
 
 val Typography =
     Typography(
-        bodyLarge =
-            TextStyle(
-                fontFamily = InterFontFamily,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.5.sp,
-            ),
+        bodyLarge = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Normal,
+            fontSize = 30.sp,
+            lineHeight = 34.sp,
+            letterSpacing = 0.5.sp,
+            color = white,
+        ),
         titleLarge =
             TextStyle(
                 fontFamily = InterFontFamily,
@@ -55,11 +55,16 @@ val Typography =
                 letterSpacing = 0.5.sp,
             ),
         bodySmall =
-            TextStyle(
-                fontFamily = InterFontFamily,
-                fontWeight = FontWeight.Normal,
-                color = disabledFilterChipColor,
-                fontSize = 14.sp,
-                letterSpacing = 0.5.sp,
-            ),
+        TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            color = white,
+        ),
+        bodyMedium = TextStyle(
+            fontFamily = FontFamily.Default,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            color = white,
+        ),
     )

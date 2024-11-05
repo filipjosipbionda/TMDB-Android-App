@@ -6,13 +6,17 @@ import androidx.compose.runtime.Composable
 
 private val LightColorScheme =
     lightColorScheme(
-        primary = Purple40,
+        primary = lightPurple,
         secondary = PurpleGrey40,
-        tertiary = Pink40,
+        tertiary = darkPurple,
+        onBackground = transparent,
+        scrim = black_70,
     )
 
 @Composable
-fun TMDBPracticeTheme(content: @Composable () -> Unit) {
+fun TMDBPracticeTheme(
+    content: @Composable () -> Unit,
+) {
     val colorScheme = LightColorScheme
 
     MaterialTheme(
