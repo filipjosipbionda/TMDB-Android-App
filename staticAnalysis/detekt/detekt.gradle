@@ -1,0 +1,25 @@
+configurations {
+    detekt
+}
+
+dependencies {
+    detekt(libs.detekt.cli)
+    detekt(libs.detekt.formatting.v1235)
+    detekt(libs.detekt)
+}
+
+tasks.register("detekt", JavaExec) {
+    group = "verification"
+    description = "Run Detekt"
+
+    mainClass.set("io.gitlab.arturbosch.detekt.cli.Main")
+    classpath = configurations.detekt
+
+    args(
+            "-i", "$projectDir/src",
+            "-c", "$rootDir/staticAnalysis/detekt/detekt.yml",
+            "-ex", ".*/resources/.*,.*/tmp/.*,.*/build/.*",
+            "-r", "html:${layout.buildDirectory.get().asFile}/outputs/reports/staticAnalysis/detekt-report.html")
+}
+
+
