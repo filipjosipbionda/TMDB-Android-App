@@ -5,7 +5,7 @@
     <dimen name="welcome_screen_content_image_width">176dp</dimen>
     <dimen name="welcome_screen_content_image_height">18dp</dimen>
     <dimen name="welcome_screen_content_spacer_height">20dp</dimen>
-    <dimen name="welcome_screen_content_button_height">48dp</dimen>
+    <dimen name="welcome_screen_content_button_height">40dp</dimen>
     <dimen name="welcome_screen_content_button_background_shape_size">20dp</dimen>
 
     <dimen name ="home_screen_headline_y_offset">70dp</dimen>
@@ -32,4 +32,31 @@
     <dimen name="content_image_shape_size">10dp</dimen>
     <dimen name="home_screen_content_vertical_padding">30dp</dimen>
     <dimen name="home_screen_search_bar_height">55dp</dimen>
+    
+    <dimen name="app_bar_y_offset">30dp</dimen>
+    <dimen name="show_screen_horizontal_padding">30dp</dimen>
+    <dimen name="show_screen_spacer_height_1">20dp</dimen>
+    <dimen name="show_screen_spacer_height_2">30dp</dimen>
+    <dimen name="horizontal_divider_thickness">1dp</dimen>
+    <dimen name="play_trailer_items_padding">10dp</dimen>
+    <dimen name="show_screen_spacer_height_3">46dp</dimen>
+    <dimen name="show_screen_spacer_end">40dp</dimen>
+    <dimen name="show_screen_app_bar_navigation_icon_size">20dp</dimen>
+    <dimen name="show_screen_app_bar_spacer_height_1">6dp</dimen>
+    <dimen name="show_screen_app_bar_icon_button_size">32dp</dimen>
+    <dimen name="show_screen_app_bar_favorite_icon_size">20dp</dimen>
+    <dimen name="circular_progress_indicator_stroke_width">6dp</dimen>
+    <dimen name="circular_progress_indicator_size">72dp</dimen>
+    <dimen name="show_screen_media_info_spacer_width_1">10dp</dimen>
+    <dimen name="show_screen_media_info_spacer_width_2">6dp</dimen>
+    <dimen name="show_screen_media_info_spacer_height_1">6dp</dimen>
+    <dimen name="media_item_duration_dot_icon_size">8dp</dimen>
+    <dimen name="media_item_duration_spacer_width_1">4dp</dimen>
+    <dimen name="media_item_duration_access_time_icon_size">20dp</dimen>
+    <dimen name="show_screen_main_actors_items_padding">10dp</dimen>
+    <dimen name="show_screen_main_actors_item_size">76dp</dimen>
+    <dimen name="show_screen_main_actors_item_border_width">6dp</dimen>
+    <dimen name="show_screen_main_actors_spacer_height">8dp</dimen>
+    <dimen name="show_screen_categories_shape_size">16dp</dimen>
+    <dimen name="show_screen_categories_items_padding_start">20dp</dimen>
 </resources>

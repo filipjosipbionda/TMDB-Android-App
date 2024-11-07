@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "hr.dice.filipbionda.tmdbpractice"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hr.dice.filipbionda.tmdbpractice"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 

@@ -37,8 +37,7 @@ val Typography =
             letterSpacing = 0.5.sp,
             color = white,
         ),
-        titleLarge =
-        TextStyle(
+        titleLarge = TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
             color = welcomeScreenPrimaryTextColor,
@@ -46,16 +45,21 @@ val Typography =
             lineHeight = 28.sp,
             letterSpacing = 0.sp,
         ),
-        labelSmall =
-        TextStyle(
+        titleSmall = TextStyle(
+            fontFamily = InterFontFamily,
+            fontWeight = FontWeight.ExtraBold,
+            color = welcomeScreenPrimaryTextColor,
+            fontSize = 20.sp,
+            lineHeight = 24.sp,
+        ),
+        labelSmall = TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
             color = welcomeScreenPrimaryTextColor,
             fontSize = 14.sp,
             letterSpacing = 0.5.sp,
         ),
-        bodySmall =
-        TextStyle(
+        bodySmall = TextStyle(
             fontFamily = FontFamily.Default,
             fontWeight = FontWeight.Normal,
             fontSize = 16.sp,
