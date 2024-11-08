@@ -2,25 +2,19 @@ package hr.dice.filipbionda.tmdbpractice.ui.welcomescreen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -31,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import hr.dice.filipbionda.tmdbpractice.R
+import hr.dice.filipbionda.tmdbpractice.ui.components.ExpandedButton
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 
 @Composable
@@ -96,13 +91,6 @@ private fun WelcomeScreenContent(modifier: Modifier = Modifier) {
                     append(stringResource(R.string.welcome_screen_text_part2))
                 }
             }
-        val buttonHorizontalGradientBrush =
-            Brush.horizontalGradient(
-                colors = listOf(
-                    MaterialTheme.colorScheme.primary,
-                    MaterialTheme.colorScheme.tertiary,
-                ),
-            )
         Image(
             painter = painterResource(R.drawable.img),
             contentDescription = null,
@@ -129,26 +117,15 @@ private fun WelcomeScreenContent(modifier: Modifier = Modifier) {
         Spacer(
             modifier = Modifier.height(dimensionResource(R.dimen.welcome_screen_content_spacer_height)),
         )
-        Button(
+        ExpandedButton(
             onClick = {},
-            modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(dimensionResource(R.dimen.welcome_screen_content_button_height))
-                .background(
-                    brush = buttonHorizontalGradientBrush,
-                    shape = RoundedCornerShape(size = dimensionResource(R.dimen.welcome_screen_content_button_background_shape_size)),
-                ),
-            colors =
-            ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent,
-            ),
-        ) {
-            Text(
-                text = stringResource(R.string.welcome_screen_button_text),
-                style = MaterialTheme.typography.bodyMedium,
-            )
-        }
+            content = {
+                Text(
+                    text = stringResource(R.string.welcome_screen_button_text),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+        )
     }
 }
 

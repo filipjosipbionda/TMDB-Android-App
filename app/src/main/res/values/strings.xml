@@ -4,4 +4,18 @@
     <string name="welcome_screen_text_part2">movies, series, anime and much more.</string>
     <string name="welcome_screen_description">Stay up to date with information about films, series, anime and much more.</string>
     <string name="welcome_screen_button_text">Access</string>
+    <string name="profile_picture_content_description">Profile picture</string>
+    <string name="movies">Movies</string>
+    <string name="series">Series</string>
+    <string name="anime">Anime</string>
+    <string name="soaps">Soaps</string>
+    <string name="specials">Specials</string>
+    <string name="seasons_count">%1$s seasons</string>
+    <string name="hours_minutes">%1$sh %2$sm</string>
+    <string name="hours">%1$sh</string>
+    <string name="minutes">%1$sm</string>
+    <string name="play_trailer">Play trailer</string>
+    <string name="actor_text">%1$s\n%2$s</string>
+    <string name="main_actors">Main actors</string>
+    <string name="recommended">Recommended</string>
 </resources>

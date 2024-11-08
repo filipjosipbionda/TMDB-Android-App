@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "hr.dice.filipbionda.tmdbpractice"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hr.dice.filipbionda.tmdbpractice"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.graphics.shapes)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
@@ -64,4 +65,10 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // GoogleFonts
+    implementation(libs.androidx.ui.text.google.fonts)
+
+    // Icons - extended
+    implementation(libs.material.icons.extended)
 }
