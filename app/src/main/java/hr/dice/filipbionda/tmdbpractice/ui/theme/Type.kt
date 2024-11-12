@@ -41,7 +41,7 @@ val Typography =
         TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
-            color = welcomeScreenPrimaryTextColor,
+            color = white,
             fontSize = 22.sp,
             lineHeight = 28.sp,
             letterSpacing = 0.sp,
@@ -50,7 +50,7 @@ val Typography =
         TextStyle(
             fontFamily = InterFontFamily,
             fontWeight = FontWeight.Bold,
-            color = welcomeScreenPrimaryTextColor,
+            color = white,
             fontSize = 14.sp,
             letterSpacing = 0.5.sp,
         ),

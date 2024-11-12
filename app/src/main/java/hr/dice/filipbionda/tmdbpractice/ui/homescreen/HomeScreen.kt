@@ -67,7 +67,7 @@ import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50
-import hr.dice.filipbionda.tmdbpractice.ui.theme.lightPurple
+import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_36
 import hr.dice.filipbionda.tmdbpractice.ui.theme.secondaryColor
 import hr.dice.filipbionda.tmdbpractice.ui.theme.white
@@ -148,7 +148,7 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Brush.verticalGradient(
             colorStops =
             arrayOf(
-                0.0f to lightPurple,
+                0.0f to purple_100,
                 0.6f to black_100,
             ),
         )
@@ -162,10 +162,12 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             ),
     ) {
         HomeScreenHeadline(
-            modifier = Modifier.offset(y = dimensionResource(R.dimen.home_screen_headline_y_offset)),
+            modifier = Modifier
+                .offset(y = dimensionResource(R.dimen.home_screen_headline_y_offset)),
         )
         HomeScreenSearchBar(
-            modifier = Modifier.zIndex(3f),
+            modifier = Modifier
+                .zIndex(3f),
         )
 
         HomeScreenChipGroup(
@@ -193,14 +195,11 @@ fun HomeScreen(modifier: Modifier = Modifier) {
 
 @Composable
 private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-    ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top,
             modifier =
-            Modifier
+            modifier
                 .fillMaxWidth()
                 .padding(
                     horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
@@ -208,7 +207,6 @@ private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = "What do you want to\nwatch today?",
-                color = white,
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Start,
                 fontWeight = FontWeight.Bold,
@@ -219,13 +217,13 @@ private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
                 Modifier
                     .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
                     .size(dimensionResource(R.dimen.home_screen_headline_image_size))
-                    .background(Color.Transparent)
+                    .background(MaterialTheme.colorScheme.onBackground)
                     .clip(shape = CircleShape)
                     .border(
                         border =
                         BorderStroke(
                             width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onSurface
                         ),
                         shape = CircleShape,
                     ),
@@ -237,7 +235,6 @@ private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
                 )
             }
         }
-    }
 }
 
 @SuppressLint("UseOfNonLambdaOffsetOverload")
@@ -388,9 +385,7 @@ fun HomeScreenChipGroup(
     }
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
-        modifier =
-        modifier
-            .fillMaxWidth(),
+        modifier = modifier,
     ) {
         items(categories) { category ->
             FilterChip(
@@ -406,17 +401,17 @@ fun HomeScreenChipGroup(
                             dimensionResource(R.dimen.filter_chip_group_content_padding)
                         },
                     )
-                    .height(30.dp)
-                    .width(90.dp),
+                    .height(dimensionResource(R.dimen.filter_chip_height))
+                    .width(dimensionResource(R.dimen.filter_chip_width)),
                 selected = selectedChip == category,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.filter_chip_shape_size)),
                 border = null,
                 colors =
                 FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = secondaryColor,
+                    selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                     selectedLabelColor = MaterialTheme.typography.labelSmall.color,
-                    disabledLabelColor = Color.White,
-                    disabledSelectedContainerColor = Color.Transparent,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurface,
+                    disabledSelectedContainerColor = MaterialTheme.colorScheme.onBackground,
                 ),
                 onClick = {
                     selectedChip = category
