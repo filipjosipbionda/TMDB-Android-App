@@ -1,4 +1,4 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen
+package hr.dice.filipbionda.tmdbpractice.ui.homescreen.presentation
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -42,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -61,9 +62,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import hr.dice.filipbionda.tmdbpractice.R
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
+import hr.dice.filipbionda.tmdbpractice.ui.homescreen.model.MediaItem
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50
@@ -73,76 +76,13 @@ import hr.dice.filipbionda.tmdbpractice.ui.theme.secondaryColor
 import hr.dice.filipbionda.tmdbpractice.ui.theme.white
 import kotlinx.coroutines.launch
 
-private const val mockMovieUrl = "https://i.namu.wiki/i/__CjJoFpuzJXzMjM2DjQYvXCNf6UbCA_uaqgE5gubv80nATEJXEMwf01jV7kQnfkpREUrl2MEmR18H8_rUFAOg.webp"
-private const val mockSeriesUrl = "https://m.media-amazon.com/images/M/MV5BYWFjYmMxMjMtMGE2ZC00YWZhLTgzNDYtYTA3ODA2MDg2NTA4XkEyXkFqcGc@._V1_.jpg"
-private const val mockAnimeUrl = "https://u.livechart.me/anime/11850/poster_image/3531ac77e0fd178adc0875c1afa6ec16.webp/large.jpg"
-private const val mockSoapsUrl = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR7HTzLmKUtvWDRCj_IJWxJw8CayAM8lZ0W3Ago_B33RWT0KfwB"
-private const val mockSpecialsUrl = "https://m.media-amazon.com/images/M/MV5BNzMyMTM1MjQxNF5BMl5BanBnXkFtZTgwMjY4NTE5NjE@._V1_.jpg"
-
-private val mockMovies =
-    listOf(
-        "movie1",
-        "movie2",
-        "movie3",
-        "movie4",
-        "movie5",
-        "movie6",
-    )
-
-private val mockSeries =
-    listOf(
-        "series1",
-        "series2",
-        "series3",
-        "series4",
-        "series5",
-        "series6",
-    )
-
-private val mockAnime =
-    listOf(
-        "anime1",
-        "anime2",
-        "anime3",
-        "anime4",
-        "anime5",
-        "anime6",
-    )
-
-private val mockSoaps =
-    listOf(
-        "soaps1",
-        "soaps2",
-        "soaps3",
-        "soaps4",
-        "soaps5",
-        "soaps6",
-    )
-
-private val mockSpecials =
-    listOf(
-        "specials1",
-        "specials2",
-        "specials3",
-        "specials4",
-        "specials5",
-        "specials6",
-    )
-
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier) {
-    var currentCategory by rememberSaveable {
-        mutableStateOf(ContentType.MOVIE)
-    }
+    val homeViewModel: HomeViewModel = viewModel()
 
-    val currentItems =
-        when (currentCategory) {
-            ContentType.MOVIE -> mockMovies
-            ContentType.SERIES -> mockSeries
-            ContentType.ANIME -> mockAnime
-            ContentType.SOAPS -> mockSoaps
-            ContentType.SPECIALS -> mockSpecials
-        }
+    val currentCategory by homeViewModel.contentType.collectAsState()
+    val mediaItems by homeViewModel.mediaItems.collectAsState()
+    val popularMediaItems by homeViewModel.popularMediaItems.collectAsState()
 
     val brush =
         Brush.verticalGradient(
@@ -167,21 +107,20 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         HomeScreenSearchBar(
             modifier = Modifier.zIndex(3f),
         )
-
         HomeScreenChipGroup(
+            currentCategory = currentCategory,
             onChipClick = { category ->
-                currentCategory = category
+                homeViewModel.setContentType(category)
             },
             categories = ContentType.entries.toList(),
-            modifier =
-            Modifier
+            modifier = Modifier
                 .offset(y = dimensionResource(R.dimen.home_screen_chip_group_y_offset))
                 .zIndex(2f)
                 .fillMaxWidth(),
         )
         HomeScreenContent(
-            items = currentItems,
-            popularItems = currentItems,
+            items = mediaItems,
+            popularItems = popularMediaItems,
             modifier =
             Modifier
                 .offset(y = dimensionResource(R.dimen.home_screen_content_y_offset))
@@ -381,10 +320,10 @@ fun HomeScreenChipGroup(
     categories: List<ContentType>,
     onChipClick: (ContentType) -> Unit,
     modifier: Modifier = Modifier,
-    initialCategory: ContentType = ContentType.MOVIE,
+    currentCategory: ContentType,
 ) {
     var selectedChip by rememberSaveable {
-        mutableStateOf(initialCategory)
+        mutableStateOf(currentCategory)
     }
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
@@ -398,7 +337,7 @@ fun HomeScreenChipGroup(
                 Modifier
                     .padding(
                         start =
-                        if (category == initialCategory) {
+                        if (category == categories.first()) {
                             dimensionResource(
                                 R.dimen.home_screen_horizontal_padding,
                             )
@@ -444,19 +383,10 @@ fun HomeScreenChipGroup(
 
 @Composable
 fun HomeScreenContent(
-    items: List<String>,
-    popularItems: List<String>,
+    items: List<MediaItem>,
+    popularItems: List<MediaItem>,
     modifier: Modifier = Modifier,
 ) {
-    val mockImage =
-        when (items.first()) {
-            "movie1" -> mockMovieUrl
-            "series1" -> mockSeriesUrl
-            "anime1" -> mockAnimeUrl
-            "soaps1" -> mockSoapsUrl
-            "specials1" -> mockSpecialsUrl
-            else -> throw IllegalArgumentException()
-        }
     val itemsLazyRowState = rememberLazyListState()
     val popularItemsLazyRowState = rememberLazyListState()
 
@@ -477,9 +407,12 @@ fun HomeScreenContent(
         ) {
             items(
                 items,
-            ) {
+                key = {
+                    it.id
+                }
+            ) {mediaItem ->
                 AsyncImage(
-                    model = mockImage,
+                    model = mediaItem.imagePath,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
                     placeholder = painterResource(R.drawable.placeholder_image),
@@ -491,7 +424,7 @@ fun HomeScreenContent(
                         )
                         .padding(
                             start =
-                            if (it == items.first()) {
+                            if (mediaItem == items.first()) {
                                 dimensionResource(
                                     R.dimen.home_screen_horizontal_padding,
                                 )
@@ -519,9 +452,14 @@ fun HomeScreenContent(
         LazyRow(
             state = popularItemsLazyRowState,
         ) {
-            items(popularItems) {
+            items(
+                popularItems,
+                key = {
+                    it.id
+                }
+            ) {mediaItem ->
                 AsyncImage(
-                    model = mockImage,
+                    model = mediaItem.imagePath,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
                     placeholder = painterResource(R.drawable.placeholder_image),
@@ -530,7 +468,7 @@ fun HomeScreenContent(
                         .animateItem()
                         .padding(
                             start =
-                            if (it == items.first()) {
+                            if (mediaItem == items.first()) {
                                 dimensionResource(
                                     R.dimen.home_screen_horizontal_padding,
                                 )
