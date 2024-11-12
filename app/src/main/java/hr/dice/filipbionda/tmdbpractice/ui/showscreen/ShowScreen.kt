@@ -58,7 +58,6 @@ import hr.dice.filipbionda.tmdbpractice.data.models.Actor
 import hr.dice.filipbionda.tmdbpractice.data.models.MediaItem
 import hr.dice.filipbionda.tmdbpractice.ui.components.ExpandedButton
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
-import hr.dice.filipbionda.tmdbpractice.ui.theme.black_21
 import hr.dice.filipbionda.tmdbpractice.ui.theme.white_CC
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -82,11 +81,17 @@ val mockMovie = MediaItem(
 )
 
 @Composable
-fun ShowScreen(mediaItem: MediaItem,navigateBack: () -> Unit, openRecommendedMediaItem: (MediaItem) -> Unit, playTrailer: (String) -> Unit ,modifier: Modifier = Modifier){
+fun ShowScreen(
+    mediaItem: MediaItem,
+    navigateBack: () -> Unit,
+    openRecommendedMediaItem: (MediaItem) -> Unit,
+    playTrailer: (String) -> Unit ,
+    modifier: Modifier = Modifier
+){
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = black_21)
+            .background(color = MaterialTheme.colorScheme.surfaceContainer)
     ){
         val columnState = rememberScrollState()
         ShowScreenAppBar(
@@ -235,7 +240,11 @@ fun ShowScreen(mediaItem: MediaItem,navigateBack: () -> Unit, openRecommendedMed
 }
 
 @Composable
-private fun ShowScreenAppBar(navigateBack: () -> Unit, addToFavorites: () -> Unit, modifier: Modifier = Modifier){
+private fun ShowScreenAppBar(
+    navigateBack: () -> Unit,
+    addToFavorites: () -> Unit,
+    modifier: Modifier = Modifier
+){
     Row(
         modifier = modifier.background(color = MaterialTheme.colorScheme.onBackground),
         verticalAlignment = Alignment.CenterVertically,
@@ -285,7 +294,10 @@ private fun ShowScreenAppBar(navigateBack: () -> Unit, addToFavorites: () -> Uni
 }
 
 @Composable
-private fun ShowScreenCoverImage(imagePath: String, modifier: Modifier = Modifier){
+private fun ShowScreenCoverImage(
+    imagePath: String,
+    modifier: Modifier = Modifier
+){
      val brush =
         Brush.verticalGradient(
             colorStops =
@@ -314,7 +326,12 @@ private fun ShowScreenCoverImage(imagePath: String, modifier: Modifier = Modifie
 }
 
 @Composable
-private fun ShowScreenMediaBasicInfo(title:String, date:String, language:String, progress: Int, duration: String?, seasons:Int?, modifier: Modifier = Modifier) {
+private fun ShowScreenMediaBasicInfo(
+    title:String, date:String,
+    language:String, progress: Int,
+    duration: String?, seasons:Int?,
+    modifier: Modifier = Modifier
+) {
 
     Row(
         modifier = modifier,
@@ -382,7 +399,10 @@ private fun ShowScreenMediaBasicInfo(title:String, date:String, language:String,
 }
 
 @Composable
-private fun MediaItemDuration(durationString: String, modifier: Modifier = Modifier){
+private fun MediaItemDuration(
+    durationString: String,
+    modifier: Modifier = Modifier
+){
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier.fillMaxWidth()
@@ -416,7 +436,10 @@ private fun MediaItemDuration(durationString: String, modifier: Modifier = Modif
 }
 
 @Composable
-private fun ShowScreenMainActors(actors: List<Actor>, modifier: Modifier = Modifier) {
+private fun ShowScreenMainActors(
+    actors: List<Actor>,
+    modifier: Modifier = Modifier
+) {
 
     LazyRow(
         modifier = modifier
@@ -456,7 +479,10 @@ private fun ShowScreenMainActors(actors: List<Actor>, modifier: Modifier = Modif
 }
 
 @Composable
-private fun ShowScreenCategories(categories: List<String>, modifier: Modifier = Modifier){
+private fun ShowScreenCategories(
+    categories: List<String>,
+    modifier: Modifier = Modifier
+){
 
         LazyRow(
             modifier = modifier,
@@ -486,7 +512,11 @@ private fun ShowScreenCategories(categories: List<String>, modifier: Modifier = 
 }
 
 @Composable
-private fun ShowScreenRecommendedMediaItems(recommendedMediaItems: List<MediaItem>, openRecommendedMediaItem: (MediaItem) -> Unit, modifier: Modifier = Modifier){
+private fun ShowScreenRecommendedMediaItems(
+    recommendedMediaItems: List<MediaItem>,
+    openRecommendedMediaItem: (MediaItem) -> Unit,
+    modifier: Modifier = Modifier
+) {
     LazyRow(
         modifier = modifier
     ) {
