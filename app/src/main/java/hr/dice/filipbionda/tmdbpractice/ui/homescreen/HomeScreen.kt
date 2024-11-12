@@ -69,7 +69,6 @@ import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50
 import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_36
-import hr.dice.filipbionda.tmdbpractice.ui.theme.secondaryColor
 import hr.dice.filipbionda.tmdbpractice.ui.theme.white
 import kotlinx.coroutines.launch
 
