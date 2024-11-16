@@ -82,5 +82,6 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.slf4j.android)
 
-
+    //Immutable Collections
+    implementation(libs.kotlinx.collections.immutable)
 }

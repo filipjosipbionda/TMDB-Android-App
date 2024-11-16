@@ -5,6 +5,7 @@ detektFormattingVersion = "1.23.5"
 detektVersion = "0.0.26"
 kotlin = "2.0.20"
 coreKtx = "1.15.0"
+kotlinxCollectionsImmutable = "0.3.8"
 ktlintVersion = "0.48.0"
 ktorClientCore = "3.0.1"
 ktor = "3.0.1"
@@ -31,6 +32,7 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 graphics-shapes = { group = "androidx.graphics", name = "graphics-shapes", version.ref = "shapes" }
+kotlinx-collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kotlinxCollectionsImmutable" }
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorClientCore" }
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor"}

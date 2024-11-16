@@ -1,6 +1,7 @@
 package hr.dice.filipbionda.tmdbpractice.ui.homescreen.presentation
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
@@ -404,6 +405,7 @@ fun HomeScreenContent(
     ) {
         LazyRow(
             state = itemsLazyRowState,
+            modifier = Modifier.height(200.dp).fillMaxWidth()
         ) {
             items(
                 items,
@@ -415,7 +417,6 @@ fun HomeScreenContent(
                     model = mediaItem.imagePath,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    placeholder = painterResource(R.drawable.placeholder_image),
                     modifier =
                     Modifier
                         .animateItem(
@@ -451,7 +452,11 @@ fun HomeScreenContent(
         )
         LazyRow(
             state = popularItemsLazyRowState,
+            modifier = Modifier
+                .height(200.dp)
+                .fillMaxWidth()
         ) {
+            Log.d("HomeScreen", items.size.toString())
             items(
                 popularItems,
                 key = {
@@ -462,7 +467,6 @@ fun HomeScreenContent(
                     model = mediaItem.imagePath,
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    placeholder = painterResource(R.drawable.placeholder_image),
                     modifier =
                     Modifier
                         .animateItem()
