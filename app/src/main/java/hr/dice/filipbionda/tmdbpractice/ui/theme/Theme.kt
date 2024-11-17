@@ -8,7 +8,7 @@ private val LightColorScheme =
     lightColorScheme(
         primary = lightPurple,
         secondary = PurpleGrey40,
-        tertiary = darkPurple,
+        tertiary = purple_54,
         onBackground = transparent,
         scrim = black_70,
     )

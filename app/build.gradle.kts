@@ -6,12 +6,12 @@ plugins {
 
 android {
     namespace = "hr.dice.filipbionda.tmdbpractice"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hr.dice.filipbionda.tmdbpractice"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -57,11 +57,31 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
+    implementation(libs.graphics.shapes)
     implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     debugImplementation(libs.androidx.ui.tooling)
 
     // Coil
     implementation(libs.coil.compose)
+
+    // GoogleFonts
+    implementation(libs.androidx.ui.text.google.fonts)
+
+    // Icons - extended
+    implementation(libs.material.icons.extended)
+
+    //Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.okhttp)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.auth)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.slf4j.android)
+
+    //Immutable Collections
+    implementation(libs.kotlinx.collections.immutable)
 }
