@@ -1,4 +1,4 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.service.api
+package hr.dice.filipbionda.tmdbpractice.homescreen.service.api
 
 object ApiContentRoutes {
     const val MOVIES = "/movie/popular?api_key=${Api.KEY}&page=2"

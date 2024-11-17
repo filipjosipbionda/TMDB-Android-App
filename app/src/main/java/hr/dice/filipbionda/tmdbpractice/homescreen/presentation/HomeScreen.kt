@@ -1,4 +1,4 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.presentation
+package hr.dice.filipbionda.tmdbpractice.homescreen.presentation
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -67,7 +67,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import hr.dice.filipbionda.tmdbpractice.R
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.model.MediaItem
+import hr.dice.filipbionda.tmdbpractice.homescreen.presentation.models.MediaItem
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50

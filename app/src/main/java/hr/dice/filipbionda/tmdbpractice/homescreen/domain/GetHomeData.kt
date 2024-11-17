@@ -1,9 +1,9 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.domain
+package hr.dice.filipbionda.tmdbpractice.homescreen.domain
 
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.data.repository.ApiRepository
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.domain.model.HomeData
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.service.api.ApiContentRoutes
+import hr.dice.filipbionda.tmdbpractice.homescreen.domain.interfaces.ApiRepository
+import hr.dice.filipbionda.tmdbpractice.homescreen.domain.models.HomeData
+import hr.dice.filipbionda.tmdbpractice.homescreen.service.api.ApiContentRoutes
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

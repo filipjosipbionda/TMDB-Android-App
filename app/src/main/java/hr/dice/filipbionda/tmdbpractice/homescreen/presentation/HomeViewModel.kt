@@ -1,13 +1,13 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.presentation
+package hr.dice.filipbionda.tmdbpractice.homescreen.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.di.HomeObjectGraph
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.domain.GetHomeData
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.domain.GetPopularHomeData
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.domain.model.HomeData
-import hr.dice.filipbionda.tmdbpractice.ui.homescreen.model.MediaItem
+import hr.dice.filipbionda.tmdbpractice.homescreen.di.HomeObjectGraph
+import hr.dice.filipbionda.tmdbpractice.homescreen.domain.GetHomeData
+import hr.dice.filipbionda.tmdbpractice.homescreen.domain.GetPopularHomeData
+import hr.dice.filipbionda.tmdbpractice.homescreen.domain.models.HomeData
+import hr.dice.filipbionda.tmdbpractice.homescreen.presentation.models.MediaItem
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.domain.model
+package hr.dice.filipbionda.tmdbpractice.homescreen.domain.models
 
 data class HomeData(
     val id: Long,

@@ -1,4 +1,4 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.service.api
+package hr.dice.filipbionda.tmdbpractice.homescreen.service.api
 
 object ApiGenresId {
    const val ANIME = 16

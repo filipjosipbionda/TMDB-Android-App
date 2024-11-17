@@ -1,4 +1,4 @@
-package hr.dice.filipbionda.tmdbpractice.ui.homescreen.data.model
+package hr.dice.filipbionda.tmdbpractice.homescreen.data.models
 
 data class ApiMediaItem(
     val id: Long,
