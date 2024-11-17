@@ -10,4 +10,6 @@
     <string name="anime">Anime</string>
     <string name="soaps">Soaps</string>
     <string name="specials">Specials</string>
+    <string name="headline_text">What do you want to\nwatch today?</string>
+    <string name="search">Search…</string>
 </resources>

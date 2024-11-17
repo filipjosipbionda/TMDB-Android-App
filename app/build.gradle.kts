@@ -11,7 +11,7 @@ android {
     defaultConfig {
         applicationId = "hr.dice.filipbionda.tmdbpractice"
         minSdk = 29
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 

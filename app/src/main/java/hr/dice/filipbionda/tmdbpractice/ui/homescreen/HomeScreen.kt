@@ -1,8 +1,6 @@
 package hr.dice.filipbionda.tmdbpractice.ui.homescreen
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,27 +27,28 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.DockedSearchBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -60,7 +58,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import hr.dice.filipbionda.tmdbpractice.R
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
@@ -68,15 +65,18 @@ import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
 import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50
 import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_100
-import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_36
-import hr.dice.filipbionda.tmdbpractice.ui.theme.white
 import kotlinx.coroutines.launch
 
-private const val mockMovieUrl = "https://i.namu.wiki/i/__CjJoFpuzJXzMjM2DjQYvXCNf6UbCA_uaqgE5gubv80nATEJXEMwf01jV7kQnfkpREUrl2MEmR18H8_rUFAOg.webp"
-private const val mockSeriesUrl = "https://m.media-amazon.com/images/M/MV5BYWFjYmMxMjMtMGE2ZC00YWZhLTgzNDYtYTA3ODA2MDg2NTA4XkEyXkFqcGc@._V1_.jpg"
-private const val mockAnimeUrl = "https://u.livechart.me/anime/11850/poster_image/3531ac77e0fd178adc0875c1afa6ec16.webp/large.jpg"
-private const val mockSoapsUrl = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR7HTzLmKUtvWDRCj_IJWxJw8CayAM8lZ0W3Ago_B33RWT0KfwB"
-private const val mockSpecialsUrl = "https://m.media-amazon.com/images/M/MV5BNzMyMTM1MjQxNF5BMl5BanBnXkFtZTgwMjY4NTE5NjE@._V1_.jpg"
+private const val mockMovieUrl =
+    "https://i.namu.wiki/i/__CjJoFpuzJXzMjM2DjQYvXCNf6UbCA_uaqgE5gubv80nATEJXEMwf01jV7kQnfkpREUrl2MEmR18H8_rUFAOg.webp"
+private const val mockSeriesUrl =
+    "https://m.media-amazon.com/images/M/MV5BYWFjYmMxMjMtMGE2ZC00YWZhLTgzNDYtYTA3ODA2MDg2NTA4XkEyXkFqcGc@._V1_.jpg"
+private const val mockAnimeUrl =
+    "https://u.livechart.me/anime/11850/poster_image/3531ac77e0fd178adc0875c1afa6ec16.webp/large.jpg"
+private const val mockSoapsUrl =
+    "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR7HTzLmKUtvWDRCj_IJWxJw8CayAM8lZ0W3Ago_B33RWT0KfwB"
+private const val mockSpecialsUrl =
+    "https://m.media-amazon.com/images/M/MV5BNzMyMTM1MjQxNF5BMl5BanBnXkFtZTgwMjY4NTE5NjE@._V1_.jpg"
 
 private val mockMovies =
     listOf(
@@ -134,6 +134,14 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         mutableStateOf(ContentType.MOVIE)
     }
 
+    val lazyListState = rememberLazyListState()
+
+    val suggestions = remember { mutableStateListOf("Spider-man 2", "Batman") }
+
+    var expanded by rememberSaveable {
+        mutableStateOf(false)
+    }
+
     val currentItems =
         when (currentCategory) {
             ContentType.MOVIE -> mockMovies
@@ -152,220 +160,211 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             ),
         )
 
-    Box(
-        modifier =
-        modifier
+    LazyColumn(
+        state = lazyListState,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = modifier
             .fillMaxSize()
             .background(
                 brush = brush,
             ),
     ) {
-        HomeScreenHeadline(
-            modifier = Modifier
-                .offset(y = dimensionResource(R.dimen.home_screen_headline_y_offset)),
-        )
-        HomeScreenSearchBar(
-            modifier = Modifier
-                .zIndex(3f),
-        )
-
-        HomeScreenChipGroup(
-            onChipClick = { category ->
-                currentCategory = category
-            },
-            categories = ContentType.entries.toList(),
-            modifier =
-            Modifier
-                .offset(y = dimensionResource(R.dimen.home_screen_chip_group_y_offset))
-                .zIndex(2f)
-                .fillMaxWidth(),
-        )
-        HomeScreenContent(
-            items = currentItems,
-            popularItems = currentItems,
-            modifier =
-            Modifier
-                .offset(y = dimensionResource(R.dimen.home_screen_content_y_offset))
-                .zIndex(1f)
-                .fillMaxSize(),
-        )
+        item {
+            Spacer(
+                modifier = Modifier.height(64.dp),
+            )
+        }
+        item {
+            HomeScreenHeadline(
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.height(20.dp),
+            )
+        }
+        item {
+            HomeScreenSearchBar(
+                expanded = expanded,
+                onExpandedChange = {
+                    expanded = it
+                },
+                onSearch = { suggestion ->
+                    if (suggestion.isNotEmpty()) {
+                        suggestions.add(suggestion)
+                    }
+                },
+                suggestions = suggestions,
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.height(36.dp),
+            )
+        }
+        item {
+            HomeScreenChipGroup(
+                onChipClick = { category ->
+                    currentCategory = category
+                },
+                categories = ContentType.entries.toList(),
+                modifier =
+                Modifier
+                    .fillMaxWidth(),
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.height(36.dp),
+            )
+        }
+        item {
+            HomeScreenContent(
+                items = currentItems,
+                popularItems = currentItems,
+            )
+        }
     }
 }
 
 @Composable
 private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
-            modifier =
-            modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
-                ),
-        ) {
-            Text(
-                text = "What do you want to\nwatch today?",
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.height(height = dimensionResource(R.dimen.home_screen_headline_text_height)),
-            )
-            Box(
-                modifier =
-                Modifier
-                    .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
-                    .size(dimensionResource(R.dimen.home_screen_headline_image_size))
-                    .background(MaterialTheme.colorScheme.onBackground)
-                    .clip(shape = CircleShape)
-                    .border(
-                        border =
-                        BorderStroke(
-                            width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
-                            color = MaterialTheme.colorScheme.onSurface
-                        ),
-                        shape = CircleShape,
-                    ),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.profile_picture),
-                    contentDescription = stringResource(R.string.profile_picture_content_description),
-                    contentScale = ContentScale.FillBounds,
-                )
-            }
-        }
-}
-
-@SuppressLint("UseOfNonLambdaOffsetOverload")
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun HomeScreenSearchBar(modifier: Modifier = Modifier) {
-    var query by rememberSaveable { mutableStateOf("") }
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    val suggestions =
-        rememberSaveable {
-            mutableListOf(
-                "Spider-man 2",
-                "Batman",
-            )
-        }
-
-    val animatedDp by animateDpAsState(
-        targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_horizontal_padding),
-        animationSpec =
-        tween(
-            durationMillis = 400,
-            easing = FastOutLinearInEasing,
-        ),
-        label = "",
-    )
-
-    val animatedYaxisOffset by animateDpAsState(
-        targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_bar_y_offset),
-        animationSpec =
-        tween(
-            durationMillis = 400,
-            easing = FastOutLinearInEasing,
-        ),
-        label = "",
-    )
-
-    Box(
-        modifier = modifier.fillMaxSize(),
-    ) {
-        SearchBar(
-            colors =
-            SearchBarDefaults.colors(
-                containerColor = purple_36,
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top,
+        modifier =
+        modifier
+            .padding(
+                horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
             ),
+    ) {
+        Text(
+            text = stringResource(R.string.headline_text),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Start,
+            fontWeight = FontWeight.Bold,
+        )
+        Box(
             modifier =
             Modifier
-                .fillMaxWidth()
-                .height(dimensionResource(R.dimen.home_screen_search_bar_height))
-                .offset(y = animatedYaxisOffset)
-                .padding(horizontal = animatedDp),
-            inputField = {
-                SearchBarDefaults.InputField(
-                    colors =
-                    TextFieldDefaults.colors(
-                        focusedTextColor = white,
+                .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
+                .size(dimensionResource(R.dimen.home_screen_headline_image_size))
+                .background(MaterialTheme.colorScheme.onBackground)
+                .clip(shape = CircleShape)
+                .border(
+                    border =
+                    BorderStroke(
+                        width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
+                        color = MaterialTheme.colorScheme.onSurface,
                     ),
-                    query = query,
-                    onSearch = { suggestion ->
-                        expanded = false
-                        query = ""
-                        if (suggestion.isNotEmpty()) {
-                            suggestions.add(suggestion)
-                        }
-                    },
-                    onQueryChange = {
-                        query = it
-                    },
-                    expanded = expanded,
-                    onExpandedChange = {
-                        expanded = it
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Search...",
-                            style =
-                            MaterialTheme.typography.bodySmall.copy(
-                                fontSize = 16.sp,
-                                color = grey_50,
-                            ),
-                        )
-                    },
-                    trailingIcon = {
-                        if (expanded) {
-                            IconButton(
-                                onClick = {
-                                    if (query.isEmpty()) {
-                                        expanded = false
-                                    } else {
-                                        query = ""
-                                    }
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = null,
-                                )
-                            }
-                        } else {
+                    shape = CircleShape,
+                ),
+        ) {
+            Image(
+                painter = painterResource(R.drawable.profile_picture),
+                contentDescription = stringResource(R.string.profile_picture_content_description),
+                contentScale = ContentScale.FillBounds,
+            )
+        }
+    }
+}
+
+@SuppressLint("UseOfNonLambdaOffsetOverload", "SuspiciousIndentation")
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeScreenSearchBar(
+    modifier: Modifier = Modifier,
+    expanded: Boolean = false,
+    onExpandedChange: (Boolean) -> Unit,
+    onSearch: (String) -> Unit,
+    suggestions: List<String>,
+) {
+    var query by rememberSaveable { mutableStateOf("") }
+
+    DockedSearchBar(
+        colors = SearchBarDefaults.colors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+        ),
+        modifier = modifier,
+        inputField = {
+            SearchBarDefaults.InputField(
+                colors =
+                TextFieldDefaults.colors(
+                    focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                ),
+                query = query,
+                onSearch = {
+                    onSearch(it)
+                },
+                onQueryChange = {
+                    query = it
+                },
+                expanded = expanded,
+                onExpandedChange = {
+                    onExpandedChange(it)
+                },
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.search),
+                        style =
+                        MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 16.sp,
+                            color = MaterialTheme.colorScheme.surfaceBright,
+                        ),
+                    )
+                },
+                trailingIcon = {
+                    if (expanded) {
+                        IconButton(
+                            onClick = {
+                                if (query.isEmpty()) {
+                                    onExpandedChange(false)
+                                } else {
+                                    query = ""
+                                }
+                            },
+                        ) {
                             Icon(
-                                imageVector = Icons.Default.Search,
+                                imageVector = Icons.Default.Clear,
                                 contentDescription = null,
-                                tint = grey_50,
                             )
                         }
-                    },
-                )
-            },
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = it
-            },
-        ) {
-            LazyColumn(
-                modifier = Modifier.padding(top = 10.dp),
-            ) {
-                items(suggestions) { suggestion ->
-                    Row(
-                        modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.search_bar_suggestions_top_padding)),
-                    ) {
+                    } else {
                         Icon(
-                            imageVector = Icons.Default.History,
-                            tint = Color.White,
+                            imageVector = Icons.Default.Search,
                             contentDescription = null,
-                        )
-                        Spacer(
-                            modifier = Modifier.width(dimensionResource(R.dimen.search_bar_suggestion_content_padding)),
-                        )
-                        Text(
-                            text = suggestion,
-                            style = MaterialTheme.typography.bodySmall,
+                            tint = MaterialTheme.colorScheme.surfaceBright,
                         )
                     }
+                },
+            )
+        },
+        expanded = expanded,
+        onExpandedChange = {
+            onExpandedChange(it)
+        },
+    ) {
+        LazyColumn(
+            modifier = Modifier.padding(top = 10.dp),
+        ) {
+            items(suggestions) { suggestion ->
+                Row(
+                    modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.search_bar_suggestions_top_padding)),
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.History,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                        contentDescription = null,
+                    )
+                    Spacer(
+                        modifier = Modifier.width(dimensionResource(R.dimen.search_bar_suggestion_content_padding)),
+                    )
+                    Text(
+                        text = suggestion,
+                        style = MaterialTheme.typography.bodySmall,
+                    )
                 }
             }
         }
@@ -388,11 +387,10 @@ fun HomeScreenChipGroup(
     ) {
         items(categories) { category ->
             FilterChip(
-                modifier =
-                Modifier
+                modifier = Modifier
                     .padding(
                         start =
-                        if (category == initialCategory) {
+                        if (category == initialCategory || category == categories.last()) {
                             dimensionResource(
                                 R.dimen.home_screen_horizontal_padding,
                             )
@@ -405,10 +403,9 @@ fun HomeScreenChipGroup(
                 selected = selectedChip == category,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.filter_chip_shape_size)),
                 border = null,
-                colors =
-                FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    selectedLabelColor = MaterialTheme.typography.labelSmall.color,
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.secondary,
+                    selectedLabelColor = MaterialTheme.colorScheme.secondary,
                     disabledLabelColor = MaterialTheme.colorScheme.onSurface,
                     disabledSelectedContainerColor = MaterialTheme.colorScheme.onBackground,
                 ),
@@ -485,7 +482,7 @@ fun HomeScreenContent(
                         )
                         .padding(
                             start =
-                            if (it == items.first()) {
+                            if (it == items.first() || it == items.last()) {
                                 dimensionResource(
                                     R.dimen.home_screen_horizontal_padding,
                                 )
@@ -524,7 +521,7 @@ fun HomeScreenContent(
                         .animateItem()
                         .padding(
                             start =
-                            if (it == items.first()) {
+                            if (it == popularItems.first() || it == popularItems.last()) {
                                 dimensionResource(
                                     R.dimen.home_screen_horizontal_padding,
                                 )
