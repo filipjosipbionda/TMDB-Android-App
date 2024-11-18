@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "hr.dice.filipbionda.tmdbpractice"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "hr.dice.filipbionda.tmdbpractice"
@@ -64,4 +64,13 @@ dependencies {
 
     // Coil
     implementation(libs.coil.compose)
+
+    // GoogleFonts
+    implementation(libs.androidx.ui.text.google.fonts)
+
+    // Icons - extended
+    implementation(libs.material.icons.extended)
+
+    //Immutable collections
+    implementation(libs.kotlinx.collections.immutable)
 }
