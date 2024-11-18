@@ -57,7 +57,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
-    implementation(libs.graphics.shapes)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
@@ -71,4 +70,7 @@ dependencies {
 
     // Icons - extended
     implementation(libs.material.icons.extended)
+
+    //Immutable collections
+    implementation(libs.kotlinx.collections.immutable)
 }
