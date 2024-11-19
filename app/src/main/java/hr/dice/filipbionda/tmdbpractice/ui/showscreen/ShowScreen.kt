@@ -16,12 +16,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Circle
@@ -58,7 +58,6 @@ import hr.dice.filipbionda.tmdbpractice.data.models.Actor
 import hr.dice.filipbionda.tmdbpractice.data.models.MediaItem
 import hr.dice.filipbionda.tmdbpractice.ui.components.ExpandedButton
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
-import hr.dice.filipbionda.tmdbpractice.ui.theme.white_CC
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -90,11 +89,10 @@ fun ShowScreen(
 ){
     Box(
         modifier = modifier
-            .fillMaxSize()
             .background(color = MaterialTheme.colorScheme.surfaceContainer)
     ){
-        val columnState = rememberScrollState()
-        ShowScreenAppBar(
+        val lazyColumnState = rememberLazyListState()
+        ScreenAppBar(
             navigateBack = navigateBack,
             addToFavorites = {
                 // TODO - cache MediaItem
@@ -105,142 +103,96 @@ fun ShowScreen(
                 .zIndex(1f)
                 .fillMaxWidth()
         )
-        Column(
+        LazyColumn (
+            state = lazyColumnState,
             horizontalAlignment = Alignment.Start,
             modifier = Modifier
-                .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.surfaceContainer)
-                .verticalScroll(
-                    state = columnState,
-                )
         ) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-
-            ) {
-                ShowScreenCoverImage(
-                   imagePath = mediaItem.coverPath,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(1f)
-                )
-                ShowScreenMediaBasicInfo(
-                    title = mockMovie.title,
-                    date = mockMovie.date,
-                    language = mockMovie.language,
-                    progress = mockMovie.rating,
-                    duration = getMinutesString(mockMovie.duration),
-                    seasons = null,
-                    modifier = Modifier
-                        .align(alignment = Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding))
-
+            item {
+                MediaItemDetails(
+                    imagePath =  mediaItem.coverPath,
+                    title = mediaItem.title,
+                    date = mediaItem.date,
+                    language = mediaItem.language,
+                    rating = mediaItem.rating,
+                    duration = mediaItem.duration,
+                    seasons = mediaItem.seasons,
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
-            )
-            HorizontalDivider(
-                thickness = dimensionResource(R.dimen.horizontal_divider_thickness),
-                color = MaterialTheme.colorScheme.scrim,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding))
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
-            )
-            Text(
-                text = mockMovie.overview,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontWeight = FontWeight.Normal,
-                    fontSize = 12.sp,
-                    color = white_CC,
-                    lineHeight = 16.sp
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding))
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_2))
-            )
-            ExpandedButton(
-                onClick = {
-                    playTrailer(mockMovie.trailerUrl)
-                },
-                modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding)),
-                content = {
-                    Row {
-                        Icon(
-                            imageVector = Icons.Outlined.PlayCircle,
-                            contentDescription = null
-                        )
-                        Spacer(
-                            modifier = Modifier.width(dimensionResource(R.dimen.play_trailer_items_padding))
-                        )
-                        Text(
-                            text = stringResource(R.string.play_trailer)
-                        )
+            item {
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
+                )
+            }
+            item {
+                HorizontalDivider(
+                    thickness = dimensionResource(R.dimen.horizontal_divider_thickness),
+                    color = MaterialTheme.colorScheme.scrim,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding))
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
+                )
+            }
+            item {
+                MediaItemOverview(
+                    overview = mockMovie.overview,
+                    trailerUrl = mockMovie.trailerUrl,
+                    playTrailer = playTrailer,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_3))
+                )
+            }
+
+           item {
+                MainActors(
+                    actors = mockMovie.actors,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+           }
+            item {
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_3))
+                )
+            }
+            item {
+                Categories(
+                    categories = mockMovie.categories
+                )
+            }
+            item {
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_3)))
+            }
+            item {
+               RecommendedMediaItems(
+                    recommendedMediaItems = mockMovies,
+                    openRecommendedMediaItem = {
+                        openRecommendedMediaItem(it)
                     }
-                }
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_3))
-            )
-            Text(
-                text = stringResource(R.string.main_actors),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.home_screen_horizontal_padding))
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
-            )
-            ShowScreenMainActors(
-                actors = mockMovie.actors,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_3))
-            )
-            Text(
-                text = setCategoryString(mockMovie.categories.count()),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.show_screen_horizontal_padding))
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
-            )
-            ShowScreenCategories(
-                categories = mockMovie.categories
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_3)))
-            Text(
-                text = stringResource(R.string.recommended),
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(start = dimensionResource(R.dimen.home_screen_horizontal_padding))
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
-            )
-            ShowScreenRecommendedMediaItems(
-                recommendedMediaItems = mockMovies,
-                openRecommendedMediaItem = {
-                    openRecommendedMediaItem(it)
-                }
-            )
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_end))
-            )
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_end))
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun ShowScreenAppBar(
+private fun ScreenAppBar(
     navigateBack: () -> Unit,
     addToFavorites: () -> Unit,
     modifier: Modifier = Modifier
@@ -294,6 +246,45 @@ private fun ShowScreenAppBar(
 }
 
 @Composable
+fun MediaItemDetails(
+    imagePath: String,
+    title: String,
+    date: String,
+    language: String,
+    rating: Int,
+    duration: Long?,
+    seasons: Int?,
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+
+    ) {
+        ShowScreenCoverImage(
+            imagePath = imagePath,
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+        )
+        ShowScreenMediaBasicInfo(
+            title = title,
+            date = date,
+            language = language,
+            progress = rating,
+            duration = getMinutesString(duration),
+            seasons = seasons,
+            year = getYearFromDateString(date),
+            modifier = Modifier
+                .align(alignment = Alignment.BottomCenter)
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding))
+
+        )
+    }
+}
+
+@Composable
 private fun ShowScreenCoverImage(
     imagePath: String,
     modifier: Modifier = Modifier
@@ -328,8 +319,11 @@ private fun ShowScreenCoverImage(
 @Composable
 private fun ShowScreenMediaBasicInfo(
     title:String, date:String,
-    language:String, progress: Int,
-    duration: String?, seasons:Int?,
+    language:String,
+    progress: Int,
+    duration: String?,
+     year: String,
+    seasons:Int?,
     modifier: Modifier = Modifier
 ) {
 
@@ -338,28 +332,13 @@ private fun ShowScreenMediaBasicInfo(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        Box(
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator(
-                progress = { progress/100f},
-                modifier = Modifier.size(72.dp),
-                trackColor = MaterialTheme.colorScheme.secondaryContainer,
-                color = MaterialTheme.colorScheme.secondary,
-                strokeWidth = dimensionResource(R.dimen.circular_progress_indicator_stroke_width)
-            )
-            Text(
-                text = "$progress%",
-                style = MaterialTheme.typography.bodyMedium
-            )
-        }
+        Rating(progress = progress)
         Spacer(
             modifier = Modifier.width(dimensionResource(R.dimen.show_screen_media_info_spacer_width_1))
         )
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            val year = getYearFromDateString(date)
             Text(
                 text = "$title ($year)",
                 style = MaterialTheme.typography.titleLarge.copy(
@@ -386,6 +365,7 @@ private fun ShowScreenMediaBasicInfo(
                 )
                 if (duration!=null){
                         MediaItemDuration(
+                            modifier = Modifier.fillMaxWidth(),
                             durationString = duration
                         )
                     }else if(seasons!=null){
@@ -399,13 +379,33 @@ private fun ShowScreenMediaBasicInfo(
 }
 
 @Composable
+private fun Rating(progress: Int, modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator(
+            progress = { progress/100f},
+            modifier = Modifier.size(72.dp),
+            trackColor = MaterialTheme.colorScheme.secondaryContainer,
+            color = MaterialTheme.colorScheme.secondary,
+            strokeWidth = dimensionResource(R.dimen.circular_progress_indicator_stroke_width)
+        )
+        Text(
+            text = "$progress%",
+            style = MaterialTheme.typography.bodyMedium
+        )
+    }
+}
+
+@Composable
 private fun MediaItemDuration(
     durationString: String,
     modifier: Modifier = Modifier
 ){
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
     ){
         Icon(
             imageVector = Icons.Default.Circle,
@@ -436,54 +436,114 @@ private fun MediaItemDuration(
 }
 
 @Composable
-private fun ShowScreenMainActors(
+private fun MediaItemOverview(overview: String, trailerUrl: String, playTrailer: (String) -> Unit, modifier: Modifier = Modifier) {
+    Column (
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    )
+    {
+        Text(
+            text = overview,
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding))
+        )
+        Spacer(
+            modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_2))
+        )
+        ExpandedButton(
+            onClick = {
+                playTrailer(trailerUrl)
+            },
+            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.show_screen_horizontal_padding)),
+            content = {
+                Row {
+                    Icon(
+                        imageVector = Icons.Outlined.PlayCircle,
+                        contentDescription = null
+                    )
+                    Spacer(
+                        modifier = Modifier.width(dimensionResource(R.dimen.play_trailer_items_padding))
+                    )
+                    Text(
+                        text = stringResource(R.string.play_trailer)
+                    )
+                }
+            }
+        )
+    }
+}
+
+@Composable
+private fun MainActors(
     actors: List<Actor>,
     modifier: Modifier = Modifier
 ) {
-
-    LazyRow(
-        modifier = modifier
-    ) {
-        items(actors) { actor ->
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(start = if(actor == actors.first()) dimensionResource(R.dimen.show_screen_horizontal_padding) else dimensionResource(R.dimen.show_screen_main_actors_items_padding))
-            ) {
-                AsyncImage(
-                    model = actor.imagePath,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(dimensionResource(R.dimen.show_screen_main_actors_item_size))
-                        .border(
-                            width = dimensionResource(R.dimen.show_screen_main_actors_item_border_width),
-                            color = MaterialTheme.colorScheme.tertiaryContainer,
-                            shape = CircleShape
-                        )
-                        .clip(CircleShape),
-                    contentDescription = null,
-                    placeholder = painterResource(R.drawable.placeholder_image)
-                )
-                Spacer(
-                    modifier = Modifier.height(dimensionResource(R.dimen.show_screen_main_actors_spacer_height))
-                )
-                Text(
-                    text = stringResource(R.string.actor_text, actor.name, actor.surname),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontSize = 12.sp
-                    ),
-                )
+    Column {
+        Text(
+            text = stringResource(R.string.main_actors),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(start = dimensionResource(R.dimen.home_screen_horizontal_padding))
+        )
+        Spacer(
+            modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
+        )
+        LazyRow(
+            modifier = modifier
+        ) {
+            items(actors) { actor ->
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(start = if(actor == actors.first()) dimensionResource(R.dimen.show_screen_horizontal_padding) else dimensionResource(R.dimen.show_screen_main_actors_items_padding))
+                ) {
+                    AsyncImage(
+                        model = actor.imagePath,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(dimensionResource(R.dimen.show_screen_main_actors_item_size))
+                            .border(
+                                width = dimensionResource(R.dimen.show_screen_main_actors_item_border_width),
+                                color = MaterialTheme.colorScheme.tertiaryContainer,
+                                shape = CircleShape
+                            )
+                            .clip(CircleShape),
+                        contentDescription = null,
+                        placeholder = painterResource(R.drawable.placeholder_image)
+                    )
+                    Spacer(
+                        modifier = Modifier.height(dimensionResource(R.dimen.show_screen_main_actors_spacer_height))
+                    )
+                    Text(
+                        text = stringResource(R.string.actor_text, actor.name, actor.surname),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontSize = 12.sp
+                        ),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun ShowScreenCategories(
+private fun Categories(
     categories: List<String>,
     modifier: Modifier = Modifier
 ){
-
+    Column {
+        Text(
+            text = setCategoryString(mockMovie.categories.count()),
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.padding(start = dimensionResource(R.dimen.show_screen_horizontal_padding))
+        )
+        Spacer(
+            modifier = Modifier.height(dimensionResource(R.dimen.show_screen_spacer_height_1))
+        )
         LazyRow(
             modifier = modifier,
         ){
@@ -509,10 +569,11 @@ private fun ShowScreenCategories(
                 )
             }
         }
+    }
 }
 
 @Composable
-private fun ShowScreenRecommendedMediaItems(
+private fun RecommendedMediaItems(
     recommendedMediaItems: List<MediaItem>,
     openRecommendedMediaItem: (MediaItem) -> Unit,
     modifier: Modifier = Modifier
@@ -552,7 +613,7 @@ private fun ShowScreenRecommendedMediaItems(
 @Composable
 private fun ShowScreenAppBarPreview(){
     TMDBPracticeTheme {
-        ShowScreenAppBar(
+        ScreenAppBar(
             modifier = Modifier.fillMaxWidth(),
             navigateBack = {},
             addToFavorites = {},
@@ -593,6 +654,7 @@ private fun ShowScreenMediaBasicInfoPreview(){
             title = "The Unforgivable",
             language = "BR",
             duration = "1h 23m",
+            year = getYearFromDateString(mockMovie.date),
             seasons = null
         )
     }
@@ -611,7 +673,7 @@ private fun MediaItemDurationPreview(){
 @Composable
 private fun ShowScreenMainActorsPreview(){
     TMDBPracticeTheme {
-        ShowScreenMainActors(
+        MainActors(
             actors = mockMovie.actors
         )
     }
@@ -621,7 +683,7 @@ private fun ShowScreenMainActorsPreview(){
 @Composable
 private fun ShowScreenCategoriesPreview(){
     TMDBPracticeTheme {
-        ShowScreenCategories(
+        Categories(
             categories = mockMovie.categories
         )
     }
@@ -630,7 +692,7 @@ private fun ShowScreenCategoriesPreview(){
 @Preview
 @Composable
 private fun ShowScreenRecommendedMediaItem(){
-    ShowScreenRecommendedMediaItems(
+    RecommendedMediaItems(
         recommendedMediaItems = mockMovies,
         openRecommendedMediaItem = {}
     )
