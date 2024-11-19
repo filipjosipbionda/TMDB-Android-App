@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import hr.dice.filipbionda.tmdbpractice.ui.showscreen.ShowScreen
 import hr.dice.filipbionda.tmdbpractice.ui.showscreen.mockMovie
+
+
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 
 class MainActivity : ComponentActivity() {

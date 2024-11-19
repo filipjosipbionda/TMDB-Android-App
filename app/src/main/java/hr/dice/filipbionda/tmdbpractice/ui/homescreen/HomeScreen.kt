@@ -1,8 +1,5 @@
 package hr.dice.filipbionda.tmdbpractice.ui.homescreen
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.core.FastOutLinearInEasing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -13,10 +10,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -27,19 +22,14 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SearchBar
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,7 +40,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -58,26 +47,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.zIndex
 import coil.compose.AsyncImage
 import hr.dice.filipbionda.tmdbpractice.R
 import hr.dice.filipbionda.tmdbpractice.data.models.ContentType
 import hr.dice.filipbionda.tmdbpractice.ui.theme.TMDBPracticeTheme
 import hr.dice.filipbionda.tmdbpractice.ui.theme.black_100
-import hr.dice.filipbionda.tmdbpractice.ui.theme.grey_50
-import hr.dice.filipbionda.tmdbpractice.ui.theme.lightPurple
-import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_36
-import hr.dice.filipbionda.tmdbpractice.ui.theme.secondaryColor
-import hr.dice.filipbionda.tmdbpractice.ui.theme.white
+import hr.dice.filipbionda.tmdbpractice.ui.theme.purple_100
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.launch
 
-private const val mockMovieUrl = "https://i.namu.wiki/i/__CjJoFpuzJXzMjM2DjQYvXCNf6UbCA_uaqgE5gubv80nATEJXEMwf01jV7kQnfkpREUrl2MEmR18H8_rUFAOg.webp"
-private const val mockSeriesUrl = "https://m.media-amazon.com/images/M/MV5BYWFjYmMxMjMtMGE2ZC00YWZhLTgzNDYtYTA3ODA2MDg2NTA4XkEyXkFqcGc@._V1_.jpg"
-private const val mockAnimeUrl = "https://u.livechart.me/anime/11850/poster_image/3531ac77e0fd178adc0875c1afa6ec16.webp/large.jpg"
-private const val mockSoapsUrl = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR7HTzLmKUtvWDRCj_IJWxJw8CayAM8lZ0W3Ago_B33RWT0KfwB"
-private const val mockSpecialsUrl = "https://m.media-amazon.com/images/M/MV5BNzMyMTM1MjQxNF5BMl5BanBnXkFtZTgwMjY4NTE5NjE@._V1_.jpg"
+private const val mockMovieUrl =
+    "https://i.namu.wiki/i/__CjJoFpuzJXzMjM2DjQYvXCNf6UbCA_uaqgE5gubv80nATEJXEMwf01jV7kQnfkpREUrl2MEmR18H8_rUFAOg.webp"
+private const val mockSeriesUrl =
+    "https://m.media-amazon.com/images/M/MV5BYWFjYmMxMjMtMGE2ZC00YWZhLTgzNDYtYTA3ODA2MDg2NTA4XkEyXkFqcGc@._V1_.jpg"
+private const val mockAnimeUrl =
+    "https://u.livechart.me/anime/11850/poster_image/3531ac77e0fd178adc0875c1afa6ec16.webp/large.jpg"
+private const val mockSoapsUrl =
+    "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcR7HTzLmKUtvWDRCj_IJWxJw8CayAM8lZ0W3Ago_B33RWT0KfwB"
+private const val mockSpecialsUrl =
+    "https://m.media-amazon.com/images/M/MV5BNzMyMTM1MjQxNF5BMl5BanBnXkFtZTgwMjY4NTE5NjE@._V1_.jpg"
 
 private val mockMovies =
     listOf(
@@ -135,6 +124,8 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         mutableStateOf(ContentType.MOVIE)
     }
 
+    val lazyListState = rememberLazyListState()
+
     val currentItems =
         when (currentCategory) {
             ContentType.MOVIE -> mockMovies
@@ -148,237 +139,152 @@ fun HomeScreen(modifier: Modifier = Modifier) {
         Brush.verticalGradient(
             colorStops =
             arrayOf(
-                0.0f to lightPurple,
+                0.0f to purple_100,
                 0.6f to black_100,
             ),
         )
 
-    Box(
-        modifier =
-        modifier
-            .fillMaxSize()
+    LazyColumn(
+        state = lazyListState,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top,
+        modifier = modifier
             .background(
                 brush = brush,
             ),
     ) {
-        HomeScreenHeadline(
-            modifier = Modifier.offset(y = dimensionResource(R.dimen.home_screen_headline_y_offset)),
-        )
-        HomeScreenSearchBar(
-            modifier = Modifier.zIndex(3f),
-        )
-
-        HomeScreenChipGroup(
-            onChipClick = { category ->
-                currentCategory = category
-            },
-            categories = ContentType.entries.toList(),
-            modifier =
-            Modifier
-                .offset(y = dimensionResource(R.dimen.home_screen_chip_group_y_offset))
-                .zIndex(2f)
-                .fillMaxWidth(),
-        )
-        HomeScreenContent(
-            items = currentItems,
-            popularItems = currentItems,
-            modifier =
-            Modifier
-                .offset(y = dimensionResource(R.dimen.home_screen_content_y_offset))
-                .zIndex(1f)
-                .fillMaxSize(),
-        )
+        item {
+            Spacer(
+                modifier = Modifier.height(dimensionResource(R.dimen.home_screen_spacer_64)),
+            )
+        }
+        item {
+            HomeScreenHeadline(
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.height(dimensionResource(R.dimen.home_screen_spacer_20)),
+            )
+        }
+        item {
+            HomeScreenSearchBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(dimensionResource(R.dimen.home_screen_search_bar_height))
+                    .padding(horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding)),
+                onClick = {},
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.height(dimensionResource(R.dimen.home_screen_spacer_36)),
+            )
+        }
+        item {
+            HomeScreenChipGroup(
+                onChipClick = { category ->
+                    currentCategory = category
+                },
+                categories = ContentType.entries.toImmutableList(),
+                modifier =
+                Modifier
+                    .fillMaxWidth(),
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.height(dimensionResource(R.dimen.home_screen_spacer_36)),
+            )
+        }
+        item {
+            HomeScreenContent(
+                items = currentItems.toImmutableList(),
+                popularItems = currentItems.toImmutableList(),
+            )
+        }
     }
 }
 
 @Composable
 private fun HomeScreenHeadline(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.Top,
+        modifier =
+        modifier
+            .padding(
+                horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
+            ),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top,
+        Text(
+            text = stringResource(R.string.headline_text),
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                textAlign = TextAlign.Start,
+            ),
+        )
+        Box(
             modifier =
             Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = dimensionResource(R.dimen.home_screen_horizontal_padding),
+                .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
+                .size(dimensionResource(R.dimen.home_screen_headline_image_size))
+                .background(MaterialTheme.colorScheme.onBackground)
+                .clip(shape = CircleShape)
+                .border(
+                    border =
+                    BorderStroke(
+                        width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    ),
+                    shape = CircleShape,
                 ),
         ) {
-            Text(
-                text = "What do you want to\nwatch today?",
-                color = white,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Start,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.height(height = dimensionResource(R.dimen.home_screen_headline_text_height)),
+            Image(
+                painter = painterResource(R.drawable.profile_picture),
+                contentDescription = stringResource(R.string.profile_picture_content_description),
+                contentScale = ContentScale.FillBounds,
             )
-            Box(
-                modifier =
-                Modifier
-                    .padding(top = dimensionResource(R.dimen.home_screen_headline_image_padding_top))
-                    .size(dimensionResource(R.dimen.home_screen_headline_image_size))
-                    .background(Color.Transparent)
-                    .clip(shape = CircleShape)
-                    .border(
-                        border =
-                        BorderStroke(
-                            width = dimensionResource(R.dimen.home_screen_headline_image_border_width),
-                            color = Color.White,
-                        ),
-                        shape = CircleShape,
-                    ),
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.profile_picture),
-                    contentDescription = stringResource(R.string.profile_picture_content_description),
-                    contentScale = ContentScale.FillBounds,
-                )
-            }
         }
     }
 }
 
-@SuppressLint("UseOfNonLambdaOffsetOverload")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun HomeScreenSearchBar(modifier: Modifier = Modifier) {
-    var query by rememberSaveable { mutableStateOf("") }
-    var expanded by rememberSaveable { mutableStateOf(false) }
-    val suggestions =
-        rememberSaveable {
-            mutableListOf(
-                "Spider-man 2",
-                "Batman",
-            )
-        }
-
-    val animatedDp by animateDpAsState(
-        targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_horizontal_padding),
-        animationSpec =
-        tween(
-            durationMillis = 400,
-            easing = FastOutLinearInEasing,
+private fun HomeScreenSearchBar(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        modifier = modifier,
+        onClick = onClick,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
         ),
-        label = "",
-    )
-
-    val animatedYaxisOffset by animateDpAsState(
-        targetValue = if (expanded) 0.dp else dimensionResource(R.dimen.home_screen_search_bar_y_offset),
-        animationSpec =
-        tween(
-            durationMillis = 400,
-            easing = FastOutLinearInEasing,
-        ),
-        label = "",
-    )
-
-    Box(
-        modifier = modifier.fillMaxSize(),
     ) {
-        SearchBar(
-            colors =
-            SearchBarDefaults.colors(
-                containerColor = purple_36,
-            ),
-            modifier =
-            Modifier
-                .fillMaxWidth()
-                .height(dimensionResource(R.dimen.home_screen_search_bar_height))
-                .offset(y = animatedYaxisOffset)
-                .padding(horizontal = animatedDp),
-            inputField = {
-                SearchBarDefaults.InputField(
-                    colors =
-                    TextFieldDefaults.colors(
-                        focusedTextColor = white,
-                    ),
-                    query = query,
-                    onSearch = { suggestion ->
-                        expanded = false
-                        query = ""
-                        if (suggestion.isNotEmpty()) {
-                            suggestions.add(suggestion)
-                        }
-                    },
-                    onQueryChange = {
-                        query = it
-                    },
-                    expanded = expanded,
-                    onExpandedChange = {
-                        expanded = it
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Search...",
-                            style =
-                            MaterialTheme.typography.bodySmall.copy(
-                                fontSize = 16.sp,
-                                color = grey_50,
-                            ),
-                        )
-                    },
-                    trailingIcon = {
-                        if (expanded) {
-                            IconButton(
-                                onClick = {
-                                    if (query.isEmpty()) {
-                                        expanded = false
-                                    } else {
-                                        query = ""
-                                    }
-                                },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Clear,
-                                    contentDescription = null,
-                                )
-                            }
-                        } else {
-                            Icon(
-                                imageVector = Icons.Default.Search,
-                                contentDescription = null,
-                                tint = grey_50,
-                            )
-                        }
-                    },
-                )
-            },
-            expanded = expanded,
-            onExpandedChange = {
-                expanded = it
-            },
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            LazyColumn(
-                modifier = Modifier.padding(top = 10.dp),
-            ) {
-                items(suggestions) { suggestion ->
-                    Row(
-                        modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.search_bar_suggestions_top_padding)),
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.History,
-                            tint = Color.White,
-                            contentDescription = null,
-                        )
-                        Spacer(
-                            modifier = Modifier.width(dimensionResource(R.dimen.search_bar_suggestion_content_padding)),
-                        )
-                        Text(
-                            text = suggestion,
-                            style = MaterialTheme.typography.bodySmall,
-                        )
-                    }
-                }
-            }
+            Text(
+                text = stringResource(R.string.search),
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.surfaceBright,
+                ),
+            )
+            Icon(
+                imageVector = Icons.Default.Search,
+                tint = MaterialTheme.colorScheme.surfaceBright,
+                contentDescription = null,
+            )
         }
     }
 }
 
 @Composable
 fun HomeScreenChipGroup(
-    categories: List<ContentType>,
+    categories: ImmutableList<ContentType>,
     onChipClick: (ContentType) -> Unit,
     modifier: Modifier = Modifier,
     initialCategory: ContentType = ContentType.MOVIE,
@@ -388,35 +294,27 @@ fun HomeScreenChipGroup(
     }
     LazyRow(
         verticalAlignment = Alignment.CenterVertically,
-        modifier =
-        modifier
-            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.filter_chip_group_content_padding)),
+        modifier = modifier,
     ) {
+        item {
+            Spacer(
+                modifier = Modifier.width(dimensionResource(R.dimen.filter_chip_group_spacer_width)),
+            )
+        }
         items(categories) { category ->
             FilterChip(
-                modifier =
-                Modifier
-                    .padding(
-                        start =
-                        if (category == initialCategory) {
-                            dimensionResource(
-                                R.dimen.home_screen_horizontal_padding,
-                            )
-                        } else {
-                            dimensionResource(R.dimen.filter_chip_group_content_padding)
-                        },
-                    )
-                    .height(30.dp)
-                    .width(90.dp),
+                modifier = Modifier
+                    .height(dimensionResource(R.dimen.filter_chip_height))
+                    .width(dimensionResource(R.dimen.filter_chip_width)),
                 selected = selectedChip == category,
                 shape = RoundedCornerShape(dimensionResource(R.dimen.filter_chip_shape_size)),
                 border = null,
-                colors =
-                FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = secondaryColor,
-                    selectedLabelColor = MaterialTheme.typography.labelSmall.color,
-                    disabledLabelColor = Color.White,
-                    disabledSelectedContainerColor = Color.Transparent,
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.secondary,
+                    selectedLabelColor = MaterialTheme.colorScheme.secondary,
+                    disabledLabelColor = MaterialTheme.colorScheme.onSurface,
+                    disabledSelectedContainerColor = MaterialTheme.colorScheme.onBackground,
                 ),
                 onClick = {
                     selectedChip = category
@@ -426,17 +324,24 @@ fun HomeScreenChipGroup(
                     Text(
                         text = createChipLabel(category),
                         style = if (category == selectedChip) {
-                            MaterialTheme.typography.labelSmall
+                            MaterialTheme.typography.labelSmall.copy(
+                                textAlign = TextAlign.Center,
+                            )
                         } else {
                             MaterialTheme.typography.labelSmall.copy(
-                                color = grey_50,
+                                color = MaterialTheme.colorScheme.surfaceBright,
                                 fontWeight = FontWeight.Normal,
+                                textAlign = TextAlign.Center,
                             )
                         },
-                        textAlign = TextAlign.Center,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 },
+            )
+        }
+        item {
+            Spacer(
+                modifier = Modifier.width(dimensionResource(R.dimen.filter_chip_group_spacer_width)),
             )
         }
     }
@@ -444,8 +349,8 @@ fun HomeScreenChipGroup(
 
 @Composable
 fun HomeScreenContent(
-    items: List<String>,
-    popularItems: List<String>,
+    items: ImmutableList<String>,
+    popularItems: ImmutableList<String>,
     modifier: Modifier = Modifier,
 ) {
     val mockImage =
@@ -462,10 +367,8 @@ fun HomeScreenContent(
 
     LaunchedEffect(items, popularItems) {
         launch {
-            listOf(
-                launch { itemsLazyRowState.animateScrollToItem(0) },
-                launch { popularItemsLazyRowState.animateScrollToItem(0) },
-            ).forEach { it.join() }
+            launch { itemsLazyRowState.animateScrollToItem(0) }
+            launch { popularItemsLazyRowState.animateScrollToItem(0) }
         }
     }
 
@@ -474,7 +377,13 @@ fun HomeScreenContent(
     ) {
         LazyRow(
             state = itemsLazyRowState,
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.home_screen_content_items_padding)),
         ) {
+            item {
+                Spacer(
+                    modifier = Modifier.width(dimensionResource(R.dimen.home_screen_content_spacer_width)),
+                )
+            }
             items(
                 items,
             ) {
@@ -489,19 +398,14 @@ fun HomeScreenContent(
                             fadeInSpec = tween(durationMillis = 300),
                             fadeOutSpec = tween(300),
                         )
-                        .padding(
-                            start =
-                            if (it == items.first()) {
-                                dimensionResource(
-                                    R.dimen.home_screen_horizontal_padding,
-                                )
-                            } else {
-                                dimensionResource(R.dimen.home_screen_content_image_padding_start)
-                            },
-                        )
                         .height(dimensionResource(R.dimen.content_image_height))
                         .width(dimensionResource(R.dimen.content_image_width))
                         .clip(shape = RoundedCornerShape(size = dimensionResource(R.dimen.content_image_shape_size))),
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier.width(dimensionResource(R.dimen.home_screen_content_spacer_width)),
                 )
             }
         }
@@ -518,7 +422,13 @@ fun HomeScreenContent(
         )
         LazyRow(
             state = popularItemsLazyRowState,
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.home_screen_content_items_padding)),
         ) {
+            item {
+                Spacer(
+                    modifier = Modifier.width(dimensionResource(R.dimen.home_screen_content_spacer_width)),
+                )
+            }
             items(popularItems) {
                 AsyncImage(
                     model = mockImage,
@@ -528,19 +438,14 @@ fun HomeScreenContent(
                     modifier =
                     Modifier
                         .animateItem()
-                        .padding(
-                            start =
-                            if (it == items.first()) {
-                                dimensionResource(
-                                    R.dimen.home_screen_horizontal_padding,
-                                )
-                            } else {
-                                dimensionResource(R.dimen.home_screen_content_image_padding_start)
-                            },
-                        )
                         .height(dimensionResource(R.dimen.content_image_height))
                         .width(dimensionResource(R.dimen.content_image_width))
                         .clip(shape = RoundedCornerShape(size = dimensionResource(R.dimen.content_image_shape_size))),
+                )
+            }
+            item {
+                Spacer(
+                    modifier = Modifier.width(dimensionResource(R.dimen.home_screen_content_spacer_width)),
                 )
             }
         }

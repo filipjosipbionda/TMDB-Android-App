@@ -70,4 +70,7 @@ dependencies {
 
     // Icons - extended
     implementation(libs.material.icons.extended)
+
+    //Immutable collections
+    implementation(libs.kotlinx.collections.immutable)
 }
